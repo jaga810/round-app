@@ -1,9 +1,49 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @circle.name %>
-</p>
+  <h1>Name:<%= @circle.name %></h1>
+<h2>男子</h2>
+<table class ="table table-striped">
+  <thead>
+    <tr>
+      <th>名前</th>
+      <th>男子と入った回数</th>
+      <th>女子と入った回数</th>
+
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @players.each do |player| %>
+    <% next if player.gender %>
+      <tr>
+        <td><%= player.name %></td>
+        <td><%= player.time %></td>
+        <td><%= player.o_time %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>女子</h2>
+<table class ="table table-striped">
+  <thead>
+    <tr>
+      <th>名前</th>
+      <th>男子と入った回数</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @players.each do |player| %>
+    <% next if !player.gender %>
+      <tr>
+        <td><%= player.name %></td>
+        <td><%= player.time %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 
 <%= link_to 'Edit', edit_circle_path(@circle) %> |
 <%= link_to 'Back', circles_path %>

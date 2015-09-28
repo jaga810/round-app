@@ -25,6 +25,9 @@ gem 'jbuilder'
 gem 'bootstrap-sass'
 gem 'sprockets'
 
+gem 'faker'
+gem 'faker-japanese'
+
 group :doc do
   gem 'sdoc', require: false
 end

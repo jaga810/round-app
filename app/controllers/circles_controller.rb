@@ -10,6 +10,7 @@ class CirclesController < ApplicationController
   # GET /circles/1
   # GET /circles/1.json
   def show
+    @players = @circle.players.all
   end
 
   # GET /circles/new

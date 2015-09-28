@@ -1,3 +1,4 @@
+
 require 'spec_helper'
 
 RSpec.describe "CirclePages", type: :request do

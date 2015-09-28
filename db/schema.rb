@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150928030746) do
+ActiveRecord::Schema.define(version: 20150928052327) do
 
   create_table "circles", force: :cascade do |t|
     t.string   "name"
@@ -25,6 +25,10 @@ ActiveRecord::Schema.define(version: 20150928030746) do
     t.boolean  "gender"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "time"
+    t.integer  "s_time"
+    t.integer  "v_time"
+    t.integer  "o_time"
   end
 
 end
