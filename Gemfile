@@ -22,6 +22,9 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder'
 
+gem 'bootstrap-sass'
+gem 'sprockets'
+
 group :doc do
   gem 'sdoc', require: false
 end
