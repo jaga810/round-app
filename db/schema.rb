@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150928052327) do
+ActiveRecord::Schema.define(version: 20150928140528) do
 
   create_table "circles", force: :cascade do |t|
     t.string   "name"
@@ -29,6 +29,21 @@ ActiveRecord::Schema.define(version: 20150928052327) do
     t.integer  "s_time"
     t.integer  "v_time"
     t.integer  "o_time"
+  end
+
+  create_table "practices", force: :cascade do |t|
+    t.integer  "circle_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string   "method"
+    t.integer  "man_rane"
+    t.integer  "mix_rane"
+  end
+
+  create_table "rounds", force: :cascade do |t|
+    t.integer  "practice_id"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
   end
 
 end

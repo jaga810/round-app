@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
+  resources :rounds
   resources :players
   resources :circles
+  resources :practices
 
   root 'circles#index'
   # The priority is based upon order of creation: first created -> highest priority.
