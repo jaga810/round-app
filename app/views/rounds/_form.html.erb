@@ -11,10 +11,9 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= f.label :practice_id %><br>
-    <%= f.number_field :practice_id %>
-  </div>
+  <div class="hidden_field">
+  <%= f.hidden_field :practice_id,  :value => @practice_id %>
+</div>
   <div class="actions">
     <%= f.submit %>
   </div>

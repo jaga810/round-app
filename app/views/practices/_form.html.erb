@@ -1,23 +1,8 @@
 <div class  ="form-horizontal" role="form">
 <%= form_for(@practice) do |f| %>
-  <% if @practice.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(@practice.errors.count, "error") %> prohibited this practice from being saved:</h2>
 
-      <ul>
-      <% @practice.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
-  <div class="form-group">
-    <div class="field">
-      <%= f.label :circle_id, "サークルid",:class=>"col-sm-6 control-label" %>
-      <div class="col-sm-2">
-        <%= f.number_field :circle_id,:class=>"form-control" %>
-      </div>
-    </div>
+  <div class="hidden_field">
+    <%= f.hidden_field :circle_id,  :value => @circle_id %>
   </div>
 
   <div class="form-group">
@@ -34,6 +19,16 @@
       <%= f.label :mix_rane, "ミックスレーン数",:class=>"col-sm-6 control-label" %>
       <div class="col-sm-2">
         <%= f.number_field :mix_rane,:class=>"form-control" %>
+      </div>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="field">
+      <%= f.label :method, "練習",:class=>"col-sm-6 control-label" %>
+      <div class="col-sm-2">
+        <%= f.select :method,{"ストスト"=>"stroke","ボレスト"=>"volley"},{},
+        {:class=>"form-control"}%>
       </div>
     </div>
   </div>

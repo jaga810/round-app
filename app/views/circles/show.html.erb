@@ -1,5 +1,13 @@
 <p id="notice"><%= notice %></p>
 
+<div class = "center">
+<%= link_to "Practice!", new_practice_path(circle_id: @circle.id,
+                                          method: "stroke",
+                                          mix_rane: "2",
+                                          man_rane: "2"),
+                          class: "btn btn-info active" %>
+</div>
+
   <h1>Name:<%= @circle.name %></h1>
 <h2>男子</h2>
 <table class ="table table-striped">

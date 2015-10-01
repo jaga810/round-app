@@ -15,6 +15,26 @@ class RoundsController < ApplicationController
   # GET /rounds/new
   def new
     @round = Round.new
+    @practice_id = params[:practice_id]
+    @pracitce = Practice.find(@practice_id)
+    @circle = @practice.circle
+    
+    @man_rane = params[:man_rane]
+    @mix_rane = params[:mix_rane]
+
+    @m_list = @circle.players.where(gender:true)
+    @f_list = @circle.players.where(gender:false)
+
+    if @man_rane != 0
+       man_rane(@man_rane)
+    end
+
+    if @mix_rane != 0
+       mix_rane(@mix_rane)
+    end
+    sum = @man_rane + @mix_rane
+    s_list = @m_list + @f_list
+    play(sum, s_list)
   end
 
   # GET /rounds/1/edit
@@ -69,6 +89,6 @@ class RoundsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def round_params
-      params.require(:round).permit(:practice_id)
+      params.require(:round).permit(:practice_id, :order)
     end
 end

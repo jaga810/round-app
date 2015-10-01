@@ -10,11 +10,16 @@ class PracticesController < ApplicationController
   # GET /practices/1
   # GET /practices/1.json
   def show
+    @circle = @practice.circle
+    @rounds = @practice.rounds
+    @players = @circle.players
+    @ranes = @practice.man_rane + @practice.mix_rane
   end
 
   # GET /practices/new
   def new
     @practice = Practice.new
+    @circle_id = params[:circle_id]
   end
 
   # GET /practices/1/edit
@@ -69,6 +74,6 @@ class PracticesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def practice_params
-      params.require(:practice).permit(:circle_id, :mix_rane, :man_rane, :circle_id)
+      params.require(:practice).permit(:circle_id, :mix_rane, :man_rane, :method)
     end
 end

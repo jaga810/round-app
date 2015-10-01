@@ -1,9 +1,78 @@
-<p id="notice"><%= notice %></p>
+<div class="center hero-unit">
+<h1><%= @circle.name %></h1>
 
-<p>
-  <strong>Circle:</strong>
-  <%= @practice.circle_id %>
-</p>
+<h1>Round</h1>
+<table class ="table table-striped">
+  <thead>
+    <tr>
+      <th>ラウンド</th>
+      <% @ranes.times do |n| %>
+        <th><%="第#{n+1}レーン"%></th>
+      <%end%>
+    </tr>
+  </thead>
+
+  <tbody>
+      <% @rounds.each do |round| %>
+        <tr>
+        <td><%= "#{round.order}"%></td>
+          <% @ranes.times do |n| %>
+            <td><%="第#{n+1}レーン"%></td>
+          <%end%>
+        </tr>
+      <% end %>
+  </tbody>
+</table>
+
+<%= link_to "Next Round!", new_round_path(practice_id: @practice.id,
+                                          man_rane: @practice.man_rane,
+                                          mix_rane: @practice.mix_rane),
+                          class: "btn btn-info" %>
+
+<h1>Member List</h1>
+<h2>男子</h2>
+<table class ="table table-striped">
+  <thead>
+    <tr>
+      <th>名前</th>
+      <th>男子と入った回数</th>
+      <th>女子と入った回数</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @players.each do |player| %>
+    <% next if player.gender %>
+      <tr>
+        <td><%= player.name %></td>
+        <td><%= player.time %></td>
+        <td><%= player.o_time %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<h2>女子</h2>
+<table class ="table table-striped">
+  <thead>
+    <tr>
+      <th>名前</th>
+      <th>男子と入った回数</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @players.each do |player| %>
+    <% next if !player.gender %>
+      <tr>
+        <td><%= player.name %></td>
+        <td><%= player.time %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
 
 <%= link_to 'Edit', edit_practice_path(@practice) %> |
 <%= link_to 'Back', practices_path %>
+</div>
