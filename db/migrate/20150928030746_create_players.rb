@@ -3,7 +3,7 @@ class CreatePlayers < ActiveRecord::Migration
     create_table :players do |t|
       t.string :name
       t.integer :circle_id
-      t.boolean :gender
+      t.string :gender
 
       t.timestamps null: false
     end

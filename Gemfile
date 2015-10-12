@@ -24,9 +24,12 @@ gem 'jbuilder'
 
 gem 'bootstrap-sass'
 gem 'sprockets'
+gem 'formtastic-bootstrap'
 
 gem 'faker'
 gem 'faker-japanese'
+
+gem 'simple_form'
 
 group :doc do
   gem 'sdoc', require: false

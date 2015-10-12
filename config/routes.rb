@@ -4,6 +4,9 @@ Rails.application.routes.draw do
   resources :circles
   resources :practices
 
+  get '/player/active', to: 'players#active'
+  get '/vs_rounds/new', to: 'vs_rounds#new'
+
   root 'circles#index'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

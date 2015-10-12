@@ -7,4 +7,8 @@ module ApplicationHelper
       return "#{origin}|#{title}"
     end
   end
+
+  def needed_time(time)
+    time.strftime("%D")
+  end
 end

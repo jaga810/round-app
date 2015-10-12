@@ -1,10 +1,17 @@
-<%= form_for(@circle) do |f| %>
+<%= render partial: 'shared/error_messages', locals: {object: @circle}%>
 
-  <div class="field">
-    <%= f.label :name %><br>
-    <%= f.text_field :name %>
-  </div>
-  <div class="actions">
-    <%= f.submit %>
-  </div>
-<% end %>
+<div class  ="form-horizontal center" role="form">
+  <%= form_for(@circle) do |f| %>
+
+    <div class="form-group center">
+      <%= f.label :name, "Name",:class=>"col-sm-2 col-sm-offset-3 control-label"%>
+      <div class="col-sm-4">
+        <%= f.text_field :name,:class=>"form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <%= f.submit btn_name, class: "btn btn-default"%>
+    </div>
+  <% end %>
+</div>

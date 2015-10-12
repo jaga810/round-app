@@ -1,78 +1,261 @@
 <div class="center hero-unit">
-<h1><%= @circle.name %></h1>
-
-<h1>Round</h1>
-<table class ="table table-striped">
-  <thead>
-    <tr>
-      <th>ラウンド</th>
-      <% @ranes.times do |n| %>
-        <th><%="第#{n+1}レーン"%></th>
-      <%end%>
-    </tr>
-  </thead>
-
-  <tbody>
-      <% @rounds.each do |round| %>
-        <tr>
-        <td><%= "#{round.order}"%></td>
-          <% @ranes.times do |n| %>
-            <td><%="第#{n+1}レーン"%></td>
+  <h1><%= title = @practice.method == "stroke" ? "Stroke vs Stroke" : "Volley vs Stroke" %></h1>
+  <div id="content" class="container" style="padding:30px; margin:30px;">
+  <!--tab-->
+  <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+  <script type="text/javascript" src="bootstrap.js"></script>
+  <link href="bootstrap.css" rel="stylesheet" type="text/css">
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#rounds" data-toggle="tab">Rounds</a></li>
+    <li><a href="#members" data-toggle="tab">Players</a></li>
+    <li><a href="#addplayers" data-toggle="tab">AddPlayers</a></li>
+    <li><a href="#settings" data-toggle="tab">Settings</a></li>
+  </ul>
+  <!--tab-->
+    <div id="myTabContent" class="tab-content" style="padding-top:30px;">
+      <div class="tab-pane fade in active" id="rounds">
+        <% if @practice.active%>
+          <%if @practice.method == "stroke"%>
+            <%= link_to "Next Round!", new_round_path(practice_id: @practice.id,
+                                                      man_rane: @practice.man_rane,
+                                                      mix_rane: @practice.mix_rane),
+                                                      class: "btn btn-info active" %>
+          <%else%>
+            <%= link_to "Next Round!", {controller: "vs_rounds", action: "new",
+                                                      practice_id: @practice.id,
+                                                      man_rane: @practice.man_rane,
+                                                      mix_rane: @practice.mix_rane},
+                                                      {:class => "btn btn-info active" }%>
           <%end%>
-        </tr>
-      <% end %>
-  </tbody>
-</table>
+        <%end%>
+        <% if !@practice.rounds.blank?%>
+        <table class ="table table-striped">
+          <thead>
+            <tr>
+              <th>Round</th>
+              <% @ranes.times do |n| %>
+                <th><%=(n+1)%></th>
+                <%if @practice.method == "stroke"%>
+                  <th></th>
+                <%else%>
+                  <th><small>Volley</small></th>
+                <%end%>
+              <%end%>
+            </tr>
+          </thead>
 
-<%= link_to "Next Round!", new_round_path(practice_id: @practice.id,
-                                          man_rane: @practice.man_rane,
-                                          mix_rane: @practice.mix_rane),
-                          class: "btn btn-info" %>
+          <tbody>
+              <% @rounds.reverse_each do |round| %>
+              <% ranes = round.mix_rane + round.man_rane %>
+              <% now_players = round.now_players.split(",")%>
+              <tr>
+                <td><%= "#{round.order.ordinalize}"%></td>
+                  <% (ranes * 2).times do |n| %>
+                   <% player = Player.find(now_players[n].to_i)%>
+                    <% if player.com %>
+                      <td>anyone</td>
+                    <%else%>
+                      <td><%=player.name%></td>
+                    <%end%>
+                  <%end%>
+              </tr>
+              <% end %>
+          </tbody>
+        </table>
+        <%end%>
+      </div>
+      <div class="tab-pane fade" id="members" style = "padding: 10px 100px ;">
+        <% if @practice.method == "stroke"%>
+        <pre style="font-size:x-large;"><b>Men</b></pre>
+          <table class ="table table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Men</th>
+                <th>Mix</th>
+                <th>Duraion</th>
+              </tr>
+            </thead>
 
-<h1>Member List</h1>
-<h2>男子</h2>
-<table class ="table table-striped">
-  <thead>
-    <tr>
-      <th>名前</th>
-      <th>男子と入った回数</th>
-      <th>女子と入った回数</th>
-    </tr>
-  </thead>
+            <tbody>
+              <% @players.each do |player| %>
+              <% next if player.gender == "female"|| !player.active || player.com%>
+                <tr>
+                  <td><%= player.name %></td>
+                  <td><%= player.time %></td>
+                  <td><%= player.o_time %></td>
+                  <td><%= player.duration %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
 
-  <tbody>
-    <% @players.each do |player| %>
-    <% next if player.gender %>
-      <tr>
-        <td><%= player.name %></td>
-        <td><%= player.time %></td>
-        <td><%= player.o_time %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+          <pre style="font-size:x-large;"><b>Women</b></pre>
+          <table class ="table table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Mix</th>
+                <th>Duration</th>
+              </tr>
+            </thead>
 
-<h2>女子</h2>
-<table class ="table table-striped">
-  <thead>
-    <tr>
-      <th>名前</th>
-      <th>男子と入った回数</th>
-    </tr>
-  </thead>
+            <tbody>
+              <% @players.each do |player| %>
+              <% next if player.gender == "male"||!player.active||player.com %>
+                <tr>
+                  <td><%= player.name %></td>
+                  <td><%= player.time %></td>
+                  <td><%= player.duration %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <%else%>
+        <pre style="font-size:x-large;"><b>Men</b></pre>
+          <table class ="table table-striped">
+            <thead>
+              <tr>
+                <th>名前</th>
+                <th>ボレーに入った回数</th>
+                <th>ストロークに入った回数</th>
+                <th>女子と入った回数</th>
+                <th>経過時間</th>
+              </tr>
+            </thead>
 
-  <tbody>
-    <% @players.each do |player| %>
-    <% next if !player.gender %>
-      <tr>
-        <td><%= player.name %></td>
-        <td><%= player.time %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+            <tbody>
+              <% @players.each do |player| %>
+              <% next if player.gender == "female"|| !player.active || player.com%>
+                <tr>
+                  <td><%= player.name %></td>
+                  <td><%= player.v_time %></td>
+                  <td><%= player.time %></td>
+                  <td><%= player.o_time %></td>
+                  <td><%= player.duration %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
 
+          <pre style="font-size:x-large;"><b>Women</b></pre>
+          <table class ="table table-striped">
+            <thead>
+              <tr>
+                <th>名前</th>
+                <th>男子と入った回数</th>
+                <th>経過時間</th>
+              </tr>
+            </thead>
 
-<%= link_to 'Edit', edit_practice_path(@practice) %> |
-<%= link_to 'Back', practices_path %>
+            <tbody>
+              <% @players.each do |player| %>
+              <% next if player.gender == "male"||!player.active||player.com %>
+                <tr>
+                  <td><%= player.name %></td>
+                  <td><%= player.time %></td>
+                  <td><%= player.duration %></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        <%end%>
+      </div>
+
+      <div class="tab-pane fade" id="addplayers" style="padding: 10px 100px;">
+        <pre style="font-size:x-large;"><b>Men</b></pre>
+          <table class ="table table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>State</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @players.each do |player| %>
+              <% next if player.gender == "female" ||player.com%>
+              <tr>
+                <td><%= player.name %></td>
+
+                  <%if player.active%>
+                    <td><%= link_to 'active', controller: "players", action: "active",
+                    circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+                  <%else%>
+                    <td><%= link_to '-', controller: "players", action: "active",
+                    circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+                  <%end%>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+
+          <pre style="font-size:x-large;"><b>Women</b></pre>
+          <table class ="table table-striped">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>state</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @players.each do |player| %>
+              <% next if player.gender == "male" || player.com %>
+                <tr>
+                  <td><%= player.name %></td>
+
+                  <%if player.active%>
+                    <td><%= link_to 'active', controller: "players", action: "active",
+                    circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+                  <%else%>
+                    <td><%= link_to '-', controller: "players", action: "active",
+                    circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+                  <%end%>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="tab-pane fade" id="settings">
+          <div class  ="form-horizontal" role="form">
+            <%= form_for @practice, :url => {:action => 'update'}  do |f| %>
+              <div class="hidden_field">
+                <%= f.hidden_field :circle_id,  :value => @practice.circle_id %>
+              </div>
+
+              <div class="hidden_field">
+                <%= f.hidden_field :method,  :value => @practice.method %>
+              </div>
+
+              <div class="form-group">
+                <div class="field">
+                  <%= f.label :man_rane, "Men ranes",:class=>"col-sm-6 control-label" %>
+                  <div class="col-sm-2">
+                    <%= f.number_field :man_rane,:class=>"form-control" %>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="field">
+                  <%= f.label :mix_rane, "Mix ranes",:class=>"col-sm-6 control-label" %>
+                  <div class="col-sm-2">
+                    <%= f.number_field :mix_rane,:class=>"form-control" %>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group submit">
+                  <div class="center">
+                      <%= f.submit "Confirm", :class => "btn btn-default" %>
+                  </div>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>

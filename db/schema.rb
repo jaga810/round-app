@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150930045632) do
+ActiveRecord::Schema.define(version: 20151011115114) do
 
   create_table "circles", force: :cascade do |t|
     t.string   "name"
@@ -22,22 +22,29 @@ ActiveRecord::Schema.define(version: 20150930045632) do
   create_table "players", force: :cascade do |t|
     t.string   "name"
     t.integer  "circle_id"
-    t.boolean  "gender"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer  "time"
-    t.integer  "s_time"
-    t.integer  "v_time"
-    t.integer  "o_time"
+    t.string   "gender"
+    t.datetime "created_at",                    null: false
+    t.datetime "updated_at",                    null: false
+    t.integer  "time",          default: 0
+    t.integer  "s_time",        default: 0
+    t.integer  "v_time",        default: 0
+    t.integer  "o_time",        default: 0
+    t.integer  "duration",      default: 0
+    t.string   "method"
+    t.text     "played_player", default: "nil"
+    t.boolean  "active",        default: true
+    t.boolean  "com"
+    t.text     "forbidden"
   end
 
   create_table "practices", force: :cascade do |t|
     t.integer  "circle_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
     t.string   "method"
     t.integer  "man_rane"
     t.integer  "mix_rane"
+    t.boolean  "active",     default: true
   end
 
   create_table "rounds", force: :cascade do |t|
@@ -47,7 +54,7 @@ ActiveRecord::Schema.define(version: 20150930045632) do
     t.integer  "order",       default: 1
     t.integer  "man_rane"
     t.integer  "mix_rane"
-    t.integer  "now_players"
+    t.text     "now_players"
   end
 
 end

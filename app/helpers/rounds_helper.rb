@@ -1,5 +1,4 @@
 module RoundsHelper
-
   def man_rane (rane)
     for i in 1..rane do
       choose_person(i, @m_list,"same")
@@ -7,61 +6,71 @@ module RoundsHelper
   end
 
   def mix_rane (rane)
-    for i in @man_rane+1..@man_rane+@mix_rane do
+    for i in @man_rane+1..@man_rane + @mix_rane do
       choose_person(i,@f_list, "opposite" )
     end
   end
 
   def play(rane, list)
     list.each do |player|
-      if @now_players.include?(player)
+      if @now_players.include?(player.id)
+        player.play
+        puts player.name
       else
-        eval("#{player}.play")
+        player.not_play
+        puts player.name
       end
     end
-    for i in 1..rane do
 
-      s1 = ""
-      s2 = ""
+    #誰と対戦したかの記録
+    for num in 0..rane-1 do
+      player1 = Player.find(@now_players[num * 2])
+      player2 = Player.find(@now_players[num * 2 + 1])
 
-      eval("s1 = @player_#{i}a")
-      eval("s2 = @player_#{i}b")
+      next if player1.com || player2.com
 
+      list1 = player1.played_player.split(" ")
+      list2 = player2.played_player.split(" ")
 
-      n = 1
-      n = 4 if i > @m_rane
+      list1.push(player2.id)
+      list2.push(player1.id)
 
-      if s1.blank? || s2.nil?
-        next
-      end
-      eval("#{s1}.play('#{s2}',#{n})")
-      eval("#{s2}.play('#{s1}',#{n})")
+      player1.update_attribute(:played_player, list1.join(" "))
+      player2.update_attribute(:played_player, list2.join(" "))
     end
   end
 
   def choose_person (rane, list, sex)
 
-    st1 = "@player_#{rane}a"
-    st2 = "@player_#{rane}b"
-
     #一人目
-    c_list = choose_new($m_list)
+    c_list = choose_new(@m_list)
     c_list = choose_least(c_list, sex)
-    eval("#{st1} = choose_dur(c_list)")
+    player1 = choose_dur(c_list)
+    player1 ||= @com
+
+    @now_players.push(player1.id)
 
     #二人目
     c_list = choose_new(list)
-    eval("c_list = played_with(c_list, #{st1})")
+    c_list = played_with(c_list, player1)
     c_list = choose_least(c_list,"same")
-    eval("#{st2} = choose_dur(c_list)")
+    player2 = choose_dur(c_list)
+    player2 ||= @com
 
+    @now_players.push(player2.id)
+
+    #playerが自分のカラムを書き換えるためのmethodデータ
+    method = sex == "opposite" ? "mix" : "man"
+    player1.update_attribute(:method, method) if !player1.com
+    player2.update_attribute(:method, method) if !player2.com
   end
 
   def played_with(list , player1)
     w_list = Array.new
     list.each do |player|
-      tof = true
-      eval("tof = false if #{player}.played_player.include?(player1)")
+      play_list = player.played_player.split(" ")
+
+      tof = play_list.include?(player1.id.to_s) ? false : true
       if tof
         w_list.push(player)
       end
@@ -70,7 +79,7 @@ module RoundsHelper
   end
 
 
-  #配列もらって人を返す
+  #durationにより人を選定
   def choose_dur(list)
     d_list = Array.new
     long_dur = 0
@@ -78,18 +87,14 @@ module RoundsHelper
 
     list.each do |player|
       tof = false
-      eval("tof = true if #{player}.duration > long_dur")
-
-      if tof
-        eval("long_dur = #{player}.duration")
-      end
-
+      # eval("tof = true if #{player}.duration > long_dur")
+        long_dur = player.duration if player.duration > long_dur
     end
 
     list.each do |player|
       tof = false
-      eval("tof = true if #{player}.duration == long_dur")
-
+      # eval("tof = true if #{player}.duration == long_dur")
+        tof = true if player.duration == long_dur
       if tof
         d_list.push(player)
       end
@@ -100,17 +105,15 @@ module RoundsHelper
     else
       can = d_list[rand(d_list.length)]
     end
-
-    @now_players.push(can)
     return can
-
   end
 
+  #roundに入っていない人を選定
   def choose_new(list)
     n_list = Array.new
    list.each do |player|
        tof = true
-       tof = false if @now_players.include?(player)
+       tof = false if @now_players.include?(player.id)
       if tof
         n_list.push(player)
       end
@@ -118,42 +121,42 @@ module RoundsHelper
    return n_list
   end
 
-  #配列を受け取って配列を返す
+  #roundに入った回数が少ない人を選定
   def choose_least(list, sex)
     l_list = Array.new
     least_time = 100
 
     list.each do |player|
-
       tof = false
       if sex == "same"
-        eval("tof = true if #{player}.played_time < least_time")
+        least_time = player.time < least_time ? player.time : least_time
       else
-        eval("tof = true if #{player}.f_time < least_time")
-      end
-      if tof
-        if sex == "same"
-        eval("least_time = #{player}.played_time")
-        else
-          eval("least_time = #{player}.f_time")
-        end
+          least_time = player.o_time < least_time ? player.o_time : least_time
       end
     end
 
-    list.each do |player|
+    puts least_time
 
+    list.each do |player|
       tof = false
       if sex == "same"
-      eval("tof = true if #{player}.played_time == least_time")
+      # eval("tof = true if #{player}.time == least_time")
+        tof = player.time == least_time ? true : false
       else
-        eval("tof = true if #{player}.f_time == least_time")
+        # eval("tof = true if #{player}.o_time == least_time")
+        tof = player.o_time == least_time ? true : false
       end
 
       if tof
         l_list.push(player)
       end
     end
-
     return l_list
+  end
+
+  def com(player)
+    player = @com if player.blank?
+    puts "com"
+    puts player
   end
 end

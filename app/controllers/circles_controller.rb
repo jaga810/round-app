@@ -10,6 +10,7 @@ class CirclesController < ApplicationController
   # GET /circles/1
   # GET /circles/1.json
   def show
+    @practices = @circle.practices.all
     @players = @circle.players.all
   end
 
@@ -26,31 +27,26 @@ class CirclesController < ApplicationController
   # POST /circles.json
   def create
     @circle = Circle.new(circle_params)
-
-    respond_to do |format|
-      if @circle.save
-        format.html { redirect_to @circle, notice: 'Circle was successfully created.' }
-        format.json { render :show, status: :created, location: @circle }
-      else
-        format.html { render :new }
-        format.json { render json: @circle.errors, status: :unprocessable_entity }
-      end
+    if @circle.save
+      @complayer = @circle.players.create!(name: "-",gender: "male", com: true)
+      redirect_to @circle
+    else
+      render new_circle_path
     end
   end
 
   # PATCH/PUT /circles/1
   # PATCH/PUT /circles/1.json
   def update
-    respond_to do |format|
-      if @circle.update(circle_params)
-        format.html { redirect_to @circle, notice: 'Circle was successfully updated.' }
-        format.json { render :show, status: :ok, location: @circle }
-      else
-        format.html { render :edit }
-        format.json { render json: @circle.errors, status: :unprocessable_entity }
-      end
+    if @circle.update(circle_params)
+      flash[:success] = "Successfully Changed"
+      redirect_to @circle
+    else
+      flash[:failure] = "Please try again"
+      redirect_to @circle
     end
   end
+
 
   # DELETE /circles/1
   # DELETE /circles/1.json

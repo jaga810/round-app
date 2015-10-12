@@ -20,6 +20,7 @@ class PracticesController < ApplicationController
   def new
     @practice = Practice.new
     @circle_id = params[:circle_id]
+    @circle = Circle.find(@circle_id)
   end
 
   # GET /practices/1/edit
@@ -30,29 +31,44 @@ class PracticesController < ApplicationController
   # POST /practices.json
   def create
     @practice = Practice.new(practice_params)
+    @practice.circle.practices.last.update_attribute(:active, false) if !@practice.circle.practices.blank?
 
-    respond_to do |format|
-      if @practice.save
-        format.html { redirect_to @practice, notice: 'Practice was successfully created.' }
-        format.json { render :show, status: :created, location: @practice }
+    players = @practice.circle.players.all
+    players.each do |player|
+      player.update_attribute(:time,0)
+      player.update_attribute(:o_time,0)
+      player.update_attribute(:v_time,0)
+      player.update_attribute(:duration,0)
+      player.update_attribute(:played_player, "nil")
+      if player.forbidden.blank?
+        player.update_attribute(:played_player, "nil")
       else
-        format.html { render :new }
-        format.json { render json: @practice.errors, status: :unprocessable_entity }
+        player.update_attribute(:played_player, player.forbidden)
       end
+    end
+
+    if @practice.save
+      flash[:success] = "Let's Enjoy Tennis!"
+      redirect_to @practice
+    else
+      flash[:failure] = "Something Wrong"
+      render 'new'
     end
   end
 
   # PATCH/PUT /practices/1
   # PATCH/PUT /practices/1.json
   def update
-    respond_to do |format|
-      if @practice.update(practice_params)
-        format.html { redirect_to @practice, notice: 'Practice was successfully updated.' }
-        format.json { render :show, status: :ok, location: @practice }
-      else
-        format.html { render :edit }
-        format.json { render json: @practice.errors, status: :unprocessable_entity }
-      end
+    if @practice.update(practice_params)
+      flash[:success] = "Successfully Changed"
+      @circle = @practice.circle
+      puts "circle_id"
+      puts params[:circle_id]
+      redirect_to @practice
+    else
+      puts "fail"
+      flash[:failure] = "Changes Denied"
+      redirect_to @practice
     end
   end
 

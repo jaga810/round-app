@@ -2,31 +2,35 @@ namespace :db do
   desc "Fill database with sample data"
   task populate: :environment do
     Circle.create!(
-    name: "Example circle",
+    name: "レモンスマッシュ",
     )
 
     circles = Circle.all
 
-    circles.each do |circle|
-        20.times do |n|
-          name = Faker::Japanese::Name.name
-          gender =true
+    boys = %w(たぐ ばん さえき くろ そらぞー くらもん こう いとそー)
+    girls = %w(まほ つらこ なつ みひろ こむろ さやか しょうこ)
 
-          circle.players.create!(
-          name: name,
-          gender: gender
-          )
+    circles.each do |circle|
+      circle.players.create!(
+        name: "-",
+        gender: "non",
+        com: true
+      )
+      boys.each do |name|
+        gender = "male"
+        circle.players.create!(
+        name: name,
+        gender: gender,
+        active:true
+        )
       end
-    end
-
-    circles.each do |circle|
-        20.times do |n|
-          name = Faker::Japanese::Name.name
-          gender = false
+      girls.each do |name|
+          gender = "female"
 
           circle.players.create!(
           name: name,
-          gender: gender
+          gender: gender,
+          active: true
           )
       end
     end

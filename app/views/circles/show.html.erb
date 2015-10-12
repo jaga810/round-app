@@ -1,57 +1,137 @@
 <p id="notice"><%= notice %></p>
 
-<div class = "center">
-<%= link_to "Practice!", new_practice_path(circle_id: @circle.id,
-                                          method: "stroke",
-                                          mix_rane: "2",
-                                          man_rane: "2"),
-                          class: "btn btn-info active" %>
+  <h1><%= @circle.name %></h1>
+
+<!--タブ-->
+<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="bootstrap.js"></script>
+<link href="bootstrap.css" rel="stylesheet" type="text/css">
+<ul class="nav nav-tabs">
+  <li><a href="#members" data-toggle="tab"><%= image_tag 'glyphicons-4-user.png' %>
+    Members</a></li>
+  <li><a href="#pastpractice" data-toggle="tab"><%= image_tag 'glyphicons-30-notes-2.png' %>
+    Past Practice</a></li>
+  <li><a href="#settings" data-toggle="tab"><%= image_tag 'glyphicons-31-pencil.png' %>
+    Settings</a></li>
+</ul>
+<!-- / タブ-->
+
+<div id="myTabContent" class="tab-content center" style="padding-top: 30px ;">
+  <div class="tab-pane fade in active" id="members" style="padding: 10px 100px;">
+    <div class="center" style="padding: 20px;">
+    <%= link_to "New Member!", new_player_path(circle_id: @circle.id),
+                              class: "btn btn-lg btn-default" %>
+    </div>
+    <pre style="font-size:x-large;"><b>Men</b></pre>
+    <table class ="table table-hover" style="padding:20px;">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>State</th>
+          <th>Forbidden</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @players.each do |player| %>
+        <% next if player.gender == "female" ||player.com%>
+        <tr>
+          <td><%= player.name %></td>
+
+          <%if player.active%>
+            <td><%= link_to 'active', controller: "players", action: "active",
+            circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+          <%else%>
+            <td><%= link_to '-', controller: "players", action: "active",
+            circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+          <%end%>
+
+            <% if !player.forbidden.blank?%>
+              <% f_list = player.forbidden.split(" ")%>
+              <% f_list.each do |player_id|%>
+                <td><%= Player.find(player_id.to_i).name%></td>
+              <% end %>
+            <% else %>
+              <td>-</td>
+            <%end%>
+            <td><%=link_to "edit", edit_player_path(player, circle_id: @circle.id)%></td>
+        </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <pre style="font-size:x-large;"><b>Women</b></pre>
+    <table class ="table table-striped" style="padding:20px;">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>state</th>
+          <th>Forbidden</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @players.each do |player| %>
+        <% next if player.gender == "male" || player.com %>
+          <tr>
+            <td><%= player.name %></td>
+
+            <%if player.active%>
+              <td><%= link_to 'active', controller: "players", action: "active",
+              circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+            <%else%>
+              <td><%= link_to '-', controller: "players", action: "active",
+              circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+            <%end%>
+
+            <% if !player.forbidden.blank?%>
+            <% f_list = player.forbidden.split(" ")%>
+              <% f_list.each do |player_id|%>
+                <td><%= Player.find(player_id.to_i).name%></td>
+              <% end %>
+            <%else%>
+              <td>-</td>
+            <%end%>
+            <td><%=link_to "edit", edit_player_path(player, circle_id: @circle.id)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tab-pane fade" id="pastpractice" style="padding: 10px 100px;">
+    <div class="center">
+      <%= link_to "Practice!", new_practice_path(circle_id: @circle.id,
+                                                method: "stroke",
+                                                mix_rane: "2",
+                                                man_rane: "2"),
+                                class: "btn btn-lg btn-default" %>
+    </div>
+
+    <table class ="table table-hover">
+      <thead>
+        <tr>
+          <th>日付</th>
+          <th>Method</th>
+          <th>ラウンド数</th>
+        </tr>
+      </thead>
+
+      <tbody>
+        <% @practices.reverse_each do |practice| %>
+          <tr>
+            <td><%= needed_time(practice.created_at) %></td>
+            <% td = practice.method == "stroke" ? "ストスト" : "ボレスト"%>
+            <td><%= td %></td>
+            <td><%= practice.rounds.count %></td>
+            <td><%= link_to "show", practice_path(practice)%></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tab-pane fade" id="settings">
+    <%= render partial:'form', locals:{btn_name: "Update"}%>
+  </div>
 </div>
-
-  <h1>Name:<%= @circle.name %></h1>
-<h2>男子</h2>
-<table class ="table table-striped">
-  <thead>
-    <tr>
-      <th>名前</th>
-      <th>男子と入った回数</th>
-      <th>女子と入った回数</th>
-
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @players.each do |player| %>
-    <% next if player.gender %>
-      <tr>
-        <td><%= player.name %></td>
-        <td><%= player.time %></td>
-        <td><%= player.o_time %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<h2>女子</h2>
-<table class ="table table-striped">
-  <thead>
-    <tr>
-      <th>名前</th>
-      <th>男子と入った回数</th>
-    </tr>
-  </thead>
-
-  <tbody>
-    <% @players.each do |player| %>
-    <% next if !player.gender %>
-      <tr>
-        <td><%= player.name %></td>
-        <td><%= player.time %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-
-<%= link_to 'Edit', edit_circle_path(@circle) %> |
-<%= link_to 'Back', circles_path %>

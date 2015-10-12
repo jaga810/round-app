@@ -1,29 +1,23 @@
 class RoundsController < ApplicationController
-  before_action :set_round, only: [:show, :edit, :update, :destroy]
-
-  # GET /rounds
-  # GET /rounds.json
-  def index
-    @rounds = Round.all
-  end
-
-  # GET /rounds/1
-  # GET /rounds/1.json
-  def show
-  end
+  include RoundsHelper
+  before_action :set_round, only: [:destroy]
 
   # GET /rounds/new
   def new
     @round = Round.new
     @practice_id = params[:practice_id]
-    @pracitce = Practice.find(@practice_id)
+    @practice = Practice.find(@practice_id)
     @circle = @practice.circle
-    
-    @man_rane = params[:man_rane]
-    @mix_rane = params[:mix_rane]
 
-    @m_list = @circle.players.where(gender:true)
-    @f_list = @circle.players.where(gender:false)
+    @man_rane = params[:man_rane].to_i
+    @mix_rane = params[:mix_rane].to_i
+
+    @m_list = @circle.players.where(gender: "male", active: true)
+    @f_list = @circle.players.where(gender: "female", active: true)
+
+    @com = @circle.players.find_by(com: true)
+
+    @now_players = Array.new
 
     if @man_rane != 0
        man_rane(@man_rane)
@@ -34,11 +28,20 @@ class RoundsController < ApplicationController
     end
     sum = @man_rane + @mix_rane
     s_list = @m_list + @f_list
-    play(sum, s_list)
-  end
+    puts "全員"
+    puts @now_players
 
-  # GET /rounds/1/edit
-  def edit
+    play(sum, s_list)
+
+    order = @practice.rounds.count + 1
+    @now_players = @now_players.join(",")
+    round = @practice.rounds.new(now_players: @now_players,order: order,man_rane: @man_rane, mix_rane: @mix_rane)
+
+    if round.save
+      redirect_to @practice
+    else
+      redirect_to @practice
+    end
   end
 
   # POST /rounds
@@ -52,20 +55,6 @@ class RoundsController < ApplicationController
         format.json { render :show, status: :created, location: @round }
       else
         format.html { render :new }
-        format.json { render json: @round.errors, status: :unprocessable_entity }
-      end
-    end
-  end
-
-  # PATCH/PUT /rounds/1
-  # PATCH/PUT /rounds/1.json
-  def update
-    respond_to do |format|
-      if @round.update(round_params)
-        format.html { redirect_to @round, notice: 'Round was successfully updated.' }
-        format.json { render :show, status: :ok, location: @round }
-      else
-        format.html { render :edit }
         format.json { render json: @round.errors, status: :unprocessable_entity }
       end
     end
