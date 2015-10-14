@@ -60,7 +60,6 @@ p {
   margin-right: 10px;
   font-size: 1.7em;
   color: #fff;
-  text-transform: uppercase;
   letter-spacing: -1px;
   padding-top: 14px;
   font-weight: bold;
@@ -70,6 +69,16 @@ p {
 #logo:hover {
   color: #fff;
   text-decoration: none;
+}
+
+#user {
+  float: right;
+  margin-left: 10px;
+  font-size: 1.2em;
+  color: #fff;
+  letter-spacing: -1px;
+  padding-top: 20px;
+  line-height: 1;
 }
 
 /* footer */

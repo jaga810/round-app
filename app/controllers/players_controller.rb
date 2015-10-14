@@ -1,16 +1,6 @@
 class PlayersController < ApplicationController
   before_action :set_player, only: [:show, :edit, :update, :destroy]
-
-  # GET /players
-  # GET /players.json
-  def index
-    @players = Player.all
-  end
-
-  # GET /players/1
-  # GET /players/1.json
-  def show
-  end
+  before_action :correct_circle, only: [:edit, :update, :destroy]
 
   def active
     @circle = Circle.find(params[:circle_id])
@@ -28,7 +18,7 @@ class PlayersController < ApplicationController
         avg_time = @m_list.average(:time)
         avg_o_time = @m_list.average(:o_time)
         avg_v_time = @m_list.average(:v_time)
-        
+
         @player.update_attribute(:v_time, avg_v_time)
         @player.update_attribute(:o_time, avg_o_time)
       else
@@ -47,6 +37,8 @@ class PlayersController < ApplicationController
   def new
     @player = Player.new
     @circle_id = params[:circle_id]
+    @circle = Circle.find(@circle_id)
+    @groups = @circle.group.split(" ")
   end
 
   # GET /players/1/edit
@@ -75,25 +67,21 @@ class PlayersController < ApplicationController
   # PATCH/PUT /players/1
   # PATCH/PUT /players/1.json
   def update
-    respond_to do |format|
-      if @player.update(player_params)
-        format.html { redirect_to @player, notice: 'Player was successfully updated.' }
-        format.json { render :show, status: :ok, location: @player }
-      else
-        format.html { render :edit }
-        format.json { render json: @player.errors, status: :unprocessable_entity }
-      end
+
+    if @player.update(player_params)
+      flash[:success] = "Successfully Changed"
+      redirect_to @player.circle
+    else
+      render 'new'
     end
   end
 
   # DELETE /players/1
   # DELETE /players/1.json
   def destroy
+    @circle = @player.circle
     @player.destroy
-    respond_to do |format|
-      format.html { redirect_to players_url, notice: 'Player was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to @circle
   end
 
   private
@@ -104,6 +92,14 @@ class PlayersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def player_params
-      params.require(:player).permit(:name, :circle_id, :gender, :forbidden)
+      params.require(:player).permit(:name, :circle_id, :gender, :forbidden,:group)
+    end
+
+    def correct_circle
+      @circle = Player.find(params[:id]).circle
+      unless current_circle?(@circle)
+        flash[:warning] = "Please sign in"
+        redirect_to(root_path)
+      end
     end
 end

@@ -28,8 +28,10 @@ gem 'formtastic-bootstrap'
 
 gem 'faker'
 gem 'faker-japanese'
+gem 'bcrypt-ruby','3.1.2'
 
 gem 'simple_form'
+gem 'data-confirm-modal', github: 'ifad/data-confirm-modal'
 
 group :doc do
   gem 'sdoc', require: false

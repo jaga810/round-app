@@ -1,3 +1,10 @@
+GIT
+  remote: git://github.com/ifad/data-confirm-modal.git
+  revision: 931cab3b269c6dab301245be2b2d738b243ba169
+  specs:
+    data-confirm-modal (1.0.2)
+      railties (>= 3.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -40,6 +47,7 @@ GEM
     autoprefixer-rails (6.0.3)
       execjs
       json
+    bcrypt-ruby (3.1.2)
     bootstrap-sass (3.3.5.1)
       autoprefixer-rails (>= 5.0.0.1)
       sass (>= 3.3.0)
@@ -226,9 +234,11 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  bcrypt-ruby (= 3.1.2)
   bootstrap-sass
   capybara
   coffee-rails
+  data-confirm-modal!
   faker
   faker-japanese
   formtastic-bootstrap

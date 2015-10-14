@@ -1,5 +1,6 @@
 class CirclesController < ApplicationController
   before_action :set_circle, only: [:show, :edit, :update, :destroy]
+  before_action :correct_circle, only: [:show,:edit, :update, :destroy]
 
   # GET /circles
   # GET /circles.json
@@ -10,8 +11,16 @@ class CirclesController < ApplicationController
   # GET /circles/1
   # GET /circles/1.json
   def show
+    @group = params[:circle][:group] if !params[:circle].nil?
+    @group = params[:group] if !params[:group].nil?
+    @groups = @circle.group.split(" ") if !@circle.group.nil?
     @practices = @circle.practices.all
-    @players = @circle.players.all
+    if @group.blank? || @group == "All"
+      @players = @circle.players.all
+    else
+      @players = @circle.players.where(group: @group)
+    end
+    @tab = params[:tab]
   end
 
   # GET /circles/new
@@ -28,7 +37,8 @@ class CirclesController < ApplicationController
   def create
     @circle = Circle.new(circle_params)
     if @circle.save
-      @complayer = @circle.players.create!(name: "-",gender: "male", com: true)
+      sign_in(@circle)
+      @circle.players.create!(name: "-",gender: "com", com: true)
       redirect_to @circle
     else
       render new_circle_path
@@ -42,7 +52,7 @@ class CirclesController < ApplicationController
       flash[:success] = "Successfully Changed"
       redirect_to @circle
     else
-      flash[:failure] = "Please try again"
+      flash[:error] = "Please try again"
       redirect_to @circle
     end
   end
@@ -52,10 +62,7 @@ class CirclesController < ApplicationController
   # DELETE /circles/1.json
   def destroy
     @circle.destroy
-    respond_to do |format|
-      format.html { redirect_to circles_url, notice: 'Circle was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+    redirect_to root_path
   end
 
   private
@@ -66,6 +73,13 @@ class CirclesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def circle_params
-      params.require(:circle).permit(:name)
+      params.require(:circle).permit(:name, :email, :password, :password_confirmation, :group)
+    end
+    def correct_circle
+      @circle = Circle.find(params[:id])
+      unless current_circle?(@circle)
+        flash[:warning] = "Please sign in"
+        redirect_to(root_path)
+      end
     end
 end

@@ -29,10 +29,13 @@
     </div>
 
     <div class="form-group">
-      <%= f.submit "Create", class: "btn btn-default"%>
+      <%= f.submit "Update", class: "btn btn-primary"%>
+      <%= link_to 'Delete',@player, class: "btn btn-danger",method:"delete",
+          data: {confirm: "Are you sure to delete '#{@player.name}'?",
+                                                       "commit" => "Delete",
+                                                       "cancel" => "Cancel",
+                                                       }, title: "Confirmation"%>
+      <%= link_to 'Back', Circle.find(@circle_id), class: "btn btn-default" %>
     </div>
   <% end %>
 </div>
-
-<%= link_to 'Show', @player %> |
-<%= link_to 'Back', players_path %>

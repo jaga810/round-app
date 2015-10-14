@@ -11,7 +11,7 @@
 
   <div class="form-group">
     <div class="field">
-      <%= f.label :man_rane, "男子レーン数",:class=>"col-sm-6 control-label" %>
+      <%= f.label :man_rane, "Man Rane",:class=>"col-sm-6 control-label" %>
       <div class="col-sm-2">
         <%= f.number_field :man_rane,:class=>"form-control" %>
       </div>
@@ -20,7 +20,7 @@
 
   <div class="form-group">
     <div class="field">
-      <%= f.label :mix_rane, "ミックスレーン数",:class=>"col-sm-6 control-label" %>
+      <%= f.label :mix_rane, "Mix Rane",:class=>"col-sm-6 control-label" %>
       <div class="col-sm-2">
         <%= f.number_field :mix_rane,:class=>"form-control" %>
       </div>
@@ -29,9 +29,9 @@
 
   <div class="form-group">
     <div class="field">
-      <%= f.label :method, "練習",:class=>"col-sm-6 control-label" %>
+      <%= f.label :method, "Method",:class=>"col-sm-6 control-label" %>
       <div class="col-sm-2">
-        <%= f.select :method,{"ストスト"=>"stroke","ボレスト"=>"volley"},{},
+        <%= f.select :method,{"Stroke"=>"stroke","Volley & Stroke"=>"volley"},{},
         {:class=>"form-control"}%>
       </div>
     </div>

@@ -1,16 +1,18 @@
 <div class="center hero-unit">
-  <h1><%= title = @practice.method == "stroke" ? "Stroke vs Stroke" : "Volley vs Stroke" %></h1>
+  <h1><%= title = @practice.method == "stroke" ? "Stroke" : "Volley & Stroke" %></h1>
   <div id="content" class="container" style="padding:30px; margin:30px;">
   <!--tab-->
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script type="text/javascript" src="bootstrap.js"></script>
   <link href="bootstrap.css" rel="stylesheet" type="text/css">
-  <ul class="nav nav-tabs">
-    <li class="active"><a href="#rounds" data-toggle="tab">Rounds</a></li>
-    <li><a href="#members" data-toggle="tab">Players</a></li>
-    <li><a href="#addplayers" data-toggle="tab">AddPlayers</a></li>
-    <li><a href="#settings" data-toggle="tab">Settings</a></li>
-  </ul>
+  <div id="tabs"class="center">
+    <ul class="nav nav-tabs nav-justified">
+      <li class="active"><a href="#rounds" data-toggle="tab">Rounds</a></li>
+      <li><a href="#members" data-toggle="tab">Players</a></li>
+      <li><a href="#addplayers" data-toggle="tab">AddPlayers</a></li>
+      <li><a href="#settings" data-toggle="tab">Settings</a></li>
+    </ul>
+  </div>
   <!--tab-->
     <div id="myTabContent" class="tab-content" style="padding-top:30px;">
       <div class="tab-pane fade in active" id="rounds">
@@ -67,6 +69,27 @@
       <div class="tab-pane fade" id="members" style = "padding: 10px 100px ;">
         <% if @practice.method == "stroke"%>
         <pre style="font-size:x-large;"><b>Men</b></pre>
+
+        <% if !@circle.group.blank?%>
+          <div calss="center form-inline" role="form">
+            <%= form_tag(@practice, method: "get") do%>
+              <div class="form-group">
+                <div class="col-sm-2 col-sm-offset-4">
+                  <% @groups.unshift("All") %>
+                  <%= select :circle,:group,@groups,{} ,class: "form-control"%>
+                  <% @groups.delete("All")%>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="col-sm-2 col-sm-offset-0">
+                  <%= submit_tag "Seach", class: "btn btn-default"%>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <%end%>
+
           <table class ="table table-striped">
             <thead>
               <tr>
@@ -116,11 +139,11 @@
           <table class ="table table-striped">
             <thead>
               <tr>
-                <th>名前</th>
-                <th>ボレーに入った回数</th>
-                <th>ストロークに入った回数</th>
-                <th>女子と入った回数</th>
-                <th>経過時間</th>
+                <th>Name</th>
+                <th>Volley</th>
+                <th>Stroke</th>
+                <th>Mix</th>
+                <th>Duration</th>
               </tr>
             </thead>
 
@@ -142,9 +165,9 @@
           <table class ="table table-striped">
             <thead>
               <tr>
-                <th>名前</th>
-                <th>男子と入った回数</th>
-                <th>経過時間</th>
+                <th>Name</th>
+                <th>Mix</th>
+                <th>Duration</th>
               </tr>
             </thead>
 

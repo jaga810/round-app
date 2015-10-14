@@ -1,6 +1,6 @@
 <header class="navbar navbar-fixed-top navbar-inverse">
   <div class="navbar-inner">
-    <div class="container">
+    <div style="padding: 0px 30px;">
       <nav>
         <!-- collapse時 -->
         <div class="navbar-header">
@@ -11,6 +11,7 @@
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
               <span class="icon-bar"></span>
+              <span class="icon-bar"></span>
           </button>
           <a href="" class="navbar-brand"></a>
         </div>
@@ -18,22 +19,31 @@
         <!-- collapse前 -->
         <div class="collapse navbar-collapse" id="navbarHeader">
         <ul class="nav navbar-nav pull-right">
-          <li><%= link_to "Home", '/circles/1'%></li>
+          <li><%= link_to "Home", root_path %></li>
           <li><%= link_to "Help", '#' %></li>
 
+          <% if signed_in?%>
             <li id="fat-menu" class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
                 Account <span class="caret"></span>
               </a>
               <ul class="dropdown-menu" role="menu">
-                <li><%= link_to "MyPage", '/circles/1' %></li>
-                <li><%= link_to "Settings", '#' %></li>
+                <li><%= link_to "Members", circle_path(id: current_circle.id,tab: "members") %></li>
+                <% if !current_circle.practices.blank?  %>
+                <li><%= link_to "Practice in Progress", practice_path(id: current_circle.practices.last,tab: "practice") %></li>
+                <% end %>
+                <li><%= link_to "Past Practice", circle_path(id: current_circle.id,tab: "pastpractice") %></li>
+                <li><%= link_to "Settings", circle_path(id: current_circle.id,tab: "settings") %></li>
                 <li class="divider"></li>
                 <li>
-                  <%= link_to "Sign out", '#', method: "delete" %>
+                  <%= link_to "Sign out",'/signout' , method: "delete" %>
                 </li>
               </ul>
             </li>
+          <%else%>
+            <li><%= link_to "Sign in", '/signin' %>
+          <% end %>
+          <li id="user"><%= var = signed_in? ? current_circle.name : "Guest User"%></li>
         </ul>
       </nav>
       </div>

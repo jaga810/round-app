@@ -10,8 +10,44 @@
       </div>
     </div>
 
+    <div class="form-group center">
+      <%= f.label :email, "Email",:class=>"col-sm-2 col-sm-offset-3 control-label"%>
+      <div class="col-sm-4">
+        <%= f.text_field :email,:class=>"form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group center">
+      <%= f.label :group, "Group",:class=>"col-sm-2 col-sm-offset-3 control-label"%>
+      <div class="col-sm-4">
+        <%= f.text_field :group,:class=>"form-control" %>
+      </div>
+      <span class="help-block" style="">ex)group1 group2 group3 ...</span>
+    </div>
+
+    <div class="form-group center">
+      <%= f.label :password, "Password",:class=>"col-sm-2 col-sm-offset-3 control-label"%>
+      <div class="col-sm-4">
+        <%= f.password_field :password,:class=>"form-control" %>
+      </div>
+    </div>
+
+    <div class="form-group center">
+      <%= f.label :password_confirmation, "Confirmation",:class=>"col-sm-2 col-sm-offset-3 control-label"%>
+      <div class="col-sm-4">
+        <%= f.password_field :password_confirmation,:class=>"form-control" %>
+      </div>
+    </div>
+
     <div class="form-group">
       <%= f.submit btn_name, class: "btn btn-default"%>
+      <% if btn_name ="Update"%>
+        <%= link_to 'Delete',@circle, class: "btn btn-danger",method:"delete",
+            data: {confirm: "Are you sure to delete '#{@circle.name}'?",
+                                                         "commit" => "Delete",
+                                                         "cancel" => "Cancel",
+                                                         }, title: "Confirmation"%>
+      <% end %>
     </div>
   <% end %>
 </div>

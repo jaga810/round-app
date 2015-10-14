@@ -1,34 +1,28 @@
 class PracticesController < ApplicationController
-  before_action :set_practice, only: [:show, :edit, :update, :destroy]
+  before_action :set_practice, only: [:show, :update, :destroy]
+  before_action :correct_circle, only: [:show, :update, :destroy ]
 
-  # GET /practices
-  # GET /practices.json
-  def index
-    @practices = Practice.all
-  end
-
-  # GET /practices/1
-  # GET /practices/1.json
   def show
     @circle = @practice.circle
     @rounds = @practice.rounds
-    @players = @circle.players
     @ranes = @practice.man_rane + @practice.mix_rane
+
+    @group = params[:circle][:group] if !params[:circle].nil?
+    @group = params[:group] if !params[:group].nil?
+    @groups = @circle.group.split(" ") if !@circle.group.nil?
+    if @group.blank? || @group == "All"
+      @players = @circle.players.all
+    else
+      @players = @circle.players.where(group: @group)
+    end
   end
 
-  # GET /practices/new
   def new
     @practice = Practice.new
     @circle_id = params[:circle_id]
     @circle = Circle.find(@circle_id)
   end
 
-  # GET /practices/1/edit
-  def edit
-  end
-
-  # POST /practices
-  # POST /practices.json
   def create
     @practice = Practice.new(practice_params)
     @practice.circle.practices.last.update_attribute(:active, false) if !@practice.circle.practices.blank?
@@ -51,7 +45,7 @@ class PracticesController < ApplicationController
       flash[:success] = "Let's Enjoy Tennis!"
       redirect_to @practice
     else
-      flash[:failure] = "Something Wrong"
+      flash[:warning] = "Something Wrong"
       render 'new'
     end
   end
@@ -62,12 +56,10 @@ class PracticesController < ApplicationController
     if @practice.update(practice_params)
       flash[:success] = "Successfully Changed"
       @circle = @practice.circle
-      puts "circle_id"
-      puts params[:circle_id]
       redirect_to @practice
     else
       puts "fail"
-      flash[:failure] = "Changes Denied"
+      flash[:warning] = "Changes Denied"
       redirect_to @practice
     end
   end
@@ -91,5 +83,13 @@ class PracticesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def practice_params
       params.require(:practice).permit(:circle_id, :mix_rane, :man_rane, :method)
+    end
+
+    def correct_circle
+      @circle = Practice.find(params[:id]).circle
+      unless current_circle?(@circle)
+        flash[:warning] = "You don't have authority"
+        redirect_to(root_path)
+      end
     end
 end

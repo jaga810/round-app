@@ -3,11 +3,16 @@ Rails.application.routes.draw do
   resources :players
   resources :circles
   resources :practices
+  resources :sessions, only: [:new, :create, :destroy]
 
   get '/player/active', to: 'players#active'
   get '/vs_rounds/new', to: 'vs_rounds#new'
 
-  root 'circles#index'
+  match '/signup', to: 'circles#new', via: 'get'
+  match '/signin', to: 'sessions#new', via: 'get'
+  match '/signout', to: 'sessions#destroy', via:'delete'
+
+  root 'sessions#new'
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
 
