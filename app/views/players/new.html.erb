@@ -23,6 +23,7 @@
       </label>
     </div>
 
+    <% if !@groups.nil?%>
     <div class="form-group center" style="padding: 20px;">
       <%= f.label :group, "Group",:class=>"col-sm-2 col-sm-offset-3  control-label"%>
       <div class="col-sm-2">
@@ -30,11 +31,12 @@
         <%= f.select :group, @groups,{}, :class => "form-control" %>
       </div>
     </div>
+    <% end %>
 
     <div class="form-group center" style="padding: 20px;">
       <%= f.label :forbidden, "Forbidden",:class=>"col-sm-2 col-sm-offset-3  control-label"%>
       <div class="col-sm-2">
-        <%= f.collection_select :forbidden, Circle.find(@circle_id||=circle_id).players.all, :id, :name,{}, :class => "form-control" %>
+        <%= f.select :forbidden, @forbidden_ls, {}, :class => "form-control" %>
       </div>
     </div>
 

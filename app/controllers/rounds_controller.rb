@@ -26,10 +26,10 @@ class RoundsController < ApplicationController
     if @mix_rane != 0
        mix_rane(@mix_rane)
     end
-    sum = @man_rane + @mix_rane
+    rane = @man_rane + @mix_rane
     s_list = @m_list + @f_list
 
-    play(sum, s_list)
+    play(rane, s_list)
 
     order = @practice.rounds.count + 1
     @now_players = @now_players.join(" ")

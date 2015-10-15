@@ -15,10 +15,8 @@ module RoundsHelper
     list.each do |player|
       if @now_players.include?(player.id)
         player.play
-        puts player.name
       else
         player.not_play
-        puts player.name
       end
     end
 

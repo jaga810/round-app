@@ -32,8 +32,12 @@ class Player < ActiveRecord::Base
   end
 
   def reset_duration
-    past_duration = self.past_duration.split(" ")
-    past_duration = past_duration.push(self.duration).join(" ")
+    if !self.past_duration.blank?
+      past_duration = self.past_duration.split(" ")
+      past_duration = past_duration.push(self.duration).join(" ")
+    else
+      past_duration = self.duration.to_s
+    end
     self.update_attribute(:past_duration, past_duration)
 
     self.update_attribute(:duration, 0)
@@ -68,8 +72,13 @@ class Player < ActiveRecord::Base
       time = self.time + 1
       self.update_attribute(:time, time)
     end
-    past_method = self.past_method.split(" ")
-    past_method = past_method.push(self.method).join(" ")
+
+    if self.past_method.blank?
+      past_method = self.method
+    else
+      past_method = self.past_method.split(" ")
+      past_method = past_method.push(self.method).join(" ")
+    end
     self.update_attribute(:past_method, past_method)
   end
 
