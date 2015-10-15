@@ -28,7 +28,7 @@ class PlayersController < ApplicationController
         avg_time = @m_list.average(:time)
         avg_o_time = @m_list.average(:o_time)
         avg_v_time = @m_list.average(:v_time)
-        
+
         @player.update_attribute(:v_time, avg_v_time)
         @player.update_attribute(:o_time, avg_o_time)
       else
@@ -41,6 +41,14 @@ class PlayersController < ApplicationController
     end
 
     redirect_to params[:page]
+  end
+
+  def rollback
+    @practice = Practice.find(params[:practice_id])
+    @round = @practice.rounds.last
+    @now_players = @round.[:now_players].split(" ")
+
+    redirect_to @practice
   end
 
   # GET /players/new

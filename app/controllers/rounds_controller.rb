@@ -28,13 +28,11 @@ class RoundsController < ApplicationController
     end
     sum = @man_rane + @mix_rane
     s_list = @m_list + @f_list
-    puts "全員"
-    puts @now_players
 
     play(sum, s_list)
 
     order = @practice.rounds.count + 1
-    @now_players = @now_players.join(",")
+    @now_players = @now_players.join(" ")
     round = @practice.rounds.new(now_players: @now_players,order: order,man_rane: @man_rane, mix_rane: @mix_rane)
 
     if round.save

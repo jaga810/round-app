@@ -6,6 +6,7 @@ Rails.application.routes.draw do
 
   get '/player/active', to: 'players#active'
   get '/vs_rounds/new', to: 'vs_rounds#new'
+  get '/player/rollback', to: 'players#rollback'
 
   root 'circles#index'
   # The priority is based upon order of creation: first created -> highest priority.

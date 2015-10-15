@@ -27,7 +27,13 @@
                                                       mix_rane: @practice.mix_rane},
                                                       {:class => "btn btn-info active" }%>
           <%end%>
+
+          <%= link_to "Rollback", {controller: "players", action: "rollback", practice_id: @practice.id},
+                                                    {:class => "btn btn-default" }%>
+
+
         <%end%>
+
         <% if !@practice.rounds.blank?%>
         <table class ="table table-striped">
           <thead>
@@ -47,7 +53,7 @@
           <tbody>
               <% @rounds.reverse_each do |round| %>
               <% ranes = round.mix_rane + round.man_rane %>
-              <% now_players = round.now_players.split(",")%>
+              <% now_players = round.now_players.split(" ")%>
               <tr>
                 <td><%= "#{round.order.ordinalize}"%></td>
                   <% (ranes * 2).times do |n| %>

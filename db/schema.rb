@@ -11,12 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151011115114) do
+ActiveRecord::Schema.define(version: 20151015013720) do
 
   create_table "circles", force: :cascade do |t|
     t.string   "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at",      null: false
+    t.datetime "updated_at",      null: false
+    t.string   "password_digest"
+    t.string   "email"
+    t.string   "remember_token"
+    t.string   "group"
   end
 
   create_table "players", force: :cascade do |t|
@@ -35,6 +39,9 @@ ActiveRecord::Schema.define(version: 20151011115114) do
     t.boolean  "active",        default: true
     t.boolean  "com"
     t.text     "forbidden"
+    t.string   "group"
+    t.text     "past_method"
+    t.text     "past_duration"
   end
 
   create_table "practices", force: :cascade do |t|
