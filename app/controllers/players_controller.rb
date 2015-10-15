@@ -33,6 +33,14 @@ class PlayersController < ApplicationController
     redirect_to params[:page]
   end
 
+  def rollback
+    @practice = Practice.find(params[:practice_id])
+    @round = @practice.rounds.last
+    @now_players = @round.[:now_players].split(" ")
+
+    redirect_to @practice
+  end
+
   # GET /players/new
   def new
     @player = Player.new

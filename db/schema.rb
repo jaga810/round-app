@@ -11,6 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
+
 ActiveRecord::Schema.define(version: 20151013021213) do
 
   create_table "circles", force: :cascade do |t|
@@ -40,6 +41,8 @@ ActiveRecord::Schema.define(version: 20151013021213) do
     t.boolean  "com"
     t.text     "forbidden"
     t.string   "group"
+    t.text     "past_method"
+    t.text     "past_duration"
   end
 
   create_table "practices", force: :cascade do |t|
