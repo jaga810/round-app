@@ -45,7 +45,11 @@ class PlayersController < ApplicationController
 
     #対戦回数のrollback
     list.each do |player|
-      if @now_players.include?(player.id)
+    puts @now_players
+    puts player.id
+      if @now_players.include?(player.id.to_s)
+        puts "rowejtiapjtegoipagejwoaip"
+        puts player.name
         player.back_play
       else
         player.back_not_play
@@ -68,6 +72,7 @@ class PlayersController < ApplicationController
       player1.update_attribute(:played_player, list1.join(" "))
       player2.update_attribute(:played_player, list2.join(" "))
     end
+    @round.destroy
     redirect_to @practice
   end
 

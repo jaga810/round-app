@@ -48,7 +48,8 @@ class Player < ActiveRecord::Base
     self.update_attribute(:duration, duration)
 
     past_duration = self.past_duration.split(" ")
-    past_duration = past_duration.delete_at(-1).join(" ")
+    past_duration = past_duration.delete_at(-1)
+    past_duration = past_duration.join(" ") if !past_duration.kind_of?(String)
     self.update_attribute(:past_duration, past_duration)
   end
 
@@ -104,7 +105,8 @@ class Player < ActiveRecord::Base
       self.update_attribute(:time, time)
     end
     past_method = self.past_method.split(" ")
-    past_method = past_method.delete_at(-1).join(" ")
+    past_method = past_method.delete_at(-1)
+    past_method = past_method.join(" ") if !past_method.kind_of?(String)
     self.update_attribute(:past_method, past_method)
   end
 end

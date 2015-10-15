@@ -32,6 +32,7 @@
                 <% if !current_circle.practices.blank?  %>
                 <li><%= link_to "Practice in Progress", practice_path(id: current_circle.practices.last,tab: "practice") %></li>
                 <% end %>
+                <li><%= link_to "New Practice", new_practice_path(circle_id: current_circle.id) %></li>
                 <li><%= link_to "Past Practice", circle_path(id: current_circle.id,tab: "pastpractice") %></li>
                 <li><%= link_to "Settings", circle_path(id: current_circle.id,tab: "settings") %></li>
                 <li class="divider"></li>
