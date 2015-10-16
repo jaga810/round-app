@@ -2,7 +2,7 @@ module SessionsHelper
 
   def sign_in(circle)
     remember_token = Circle.new_remember_token
-    cookies.permanent[:remember_token] = remember_token
+    cookies[:remember_token] = { :value => remember_token, :expires => 1.days.from_now }
     circle.update_attribute(:remember_token, Circle.encrypt(remember_token))
     self.current_circle = circle
   end
