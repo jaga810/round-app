@@ -5,10 +5,11 @@ class PlayersController < ApplicationController
   def active
     @circle = Circle.find(params[:circle_id])
     @player = Player.find(params[:player_id])
+    @practice = Practice.find(params[:practice_id])
     active = @player.active
     active = active == true ? false : true
 
-    @player.update_attribute(:active, active)
+    @player.update_attribute(:active, active )
 
     @m_list = Player.where(active: true, gender: "male")
     @f_list = Player.where(active: true, gender: "female")
@@ -30,7 +31,13 @@ class PlayersController < ApplicationController
       @player.update_attribute(:duration, 100)
     end
 
-    redirect_to params[:page]
+    @tab = params[:tab]
+    case params[:page]
+    when "practices"
+      redirect_to :controller => 'practices', :action => 'show', :id => @practice.id, tab: @tab
+    else
+      redirect_to @circle
+    end
   end
 
   def rollback
@@ -45,11 +52,7 @@ class PlayersController < ApplicationController
 
     #対戦回数のrollback
     list.each do |player|
-    puts @now_players
-    puts player.id
       if @now_players.include?(player.id.to_s)
-        puts "rowejtiapjtegoipagejwoaip"
-        puts player.name
         player.back_play
       else
         player.back_not_play
@@ -66,8 +69,8 @@ class PlayersController < ApplicationController
       list1 = player1.played_player.split(" ")
       list2 = player2.played_player.split(" ")
 
-      list1.delete(player2.id)
-      list2.delete(player1.id)
+      list1.delete(player2.id.to_s)
+      list2.delete(player1.id.to_s)
 
       player1.update_attribute(:played_player, list1.join(" "))
       player2.update_attribute(:played_player, list2.join(" "))
@@ -94,22 +97,35 @@ class PlayersController < ApplicationController
   def edit
     @circle = @player.circle
     @circle_id = @circle.id
+
+    if !@circle.group.blank?
+      @groups = @circle.group.split(" ")
+    end
+    @forbidden_ls = ["-"]
+    @circle.players.each do |player|
+      @forbidden_ls.push(player.name)
+    end
   end
 
   # POST /players
   # POST /players.json
   def create
-    forbidden = player_params[:forbidden]
-    forbidden = forbidden == "-" ? nil : Player.find_by(name: player_params[:forbidden]).id
+    @forbidden = player_params[:forbidden]
+    if @forbidden == "-"
+      @forbidden = nil
+    else
+      @forbidden = Player.find_by(name: player_params[:forbidden]).id
+    end
     name = player_params[:name]
     circle_id = player_params[:circle_id]
     gender = player_params[:gender]
     group = player_params[:group]
 
-    @player = Player.new(name: name, circle_id: circle_id, gender: gender, group: group,forbidden: forbidden)
+    @player = Player.new(name: name, circle_id: circle_id, gender: gender, group: group,forbidden: @forbidden)
     @circle = @player.circle
 
     if @player.save
+      Player.find(@forbidden).update_attribute(:forbidden, @player.id)
       redirect_to @circle
     else
       @player = Player.new(player_params,params[:gender])
@@ -121,12 +137,31 @@ class PlayersController < ApplicationController
   # PATCH/PUT /players/1
   # PATCH/PUT /players/1.json
   def update
-
-    if @player.update(player_params)
-      flash[:success] = "Successfully Changed"
-      redirect_to @player.circle
+    forbidden = player_params[:forbidden]
+    if forbidden == "-"
+      forbidden = nil
     else
-      render 'new'
+      forbidden = Player.find_by(name: player_params[:forbidden]).id
+    end
+    name = player_params[:name]
+    circle_id = player_params[:circle_id]
+    gender = player_params[:gender]
+    group = player_params[:group]
+    @circle = @player.circle
+
+    pre_forbidden = player_params[:pre_forbidden]
+
+    if @player.update(name: name, circle_id: circle_id, gender: gender, group: group,forbidden: forbidden)
+      if !pre_forbidden.blank?
+        partner = forbidden.nil? ? nil : @player.id
+        Player.find(pre_forbidden).update_attribute(:forbidden, partner)
+      end
+      flash[:success] = "Successfully Changed"
+      redirect_to @circle
+    else
+      @player = Player.new(player_params,params[:gender])
+      @circle_id = Circle.find(player_params[:circle_id]).id
+      render "new"
     end
   end
 
@@ -146,7 +181,7 @@ class PlayersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def player_params
-      params.require(:player).permit(:name, :circle_id, :gender,:group, :forbidden)
+      params.require(:player).permit(:name, :circle_id, :gender,:group, :forbidden, :pre_forbidden)
     end
 
     def correct_circle

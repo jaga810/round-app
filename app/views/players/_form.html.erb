@@ -1,12 +1,9 @@
-<h1>Member Edit</h1>
-
 <%= render partial: 'shared/error_messages', locals: {object: @player}%>
 
 <div class  ="form-horizontal center" role="form">
   <%= form_for(@player) do |f| %>
 
     <%= f.hidden_field :circle_id,  :value => @circle_id %>
-    <%= f.hidden_field :pre_forbidden,  :value => @player.forbidden %>
 
     <div class="form-group center">
       <%= f.label :name, "Name",:class=>"col-sm-2 col-sm-offset-3 control-label"%>
@@ -42,7 +39,7 @@
     </div>
 
     <div class="form-group">
-    <%= f.submit "Update!", class: "btn btn-default btn-primary"%>
+    <%= f.submit "Create!", class: "btn btn-default btn-primary"%>
       <%= link_to 'Cancel', players_path,class: "btn btn-default"%>
     </div>
   <% end %>

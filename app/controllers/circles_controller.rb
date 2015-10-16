@@ -21,6 +21,8 @@ class CirclesController < ApplicationController
       @players = @circle.players.where(group: @group)
     end
     @tab = params[:tab]
+    puts "tab?"
+    puts @tab
   end
 
   # GET /circles/new
@@ -50,9 +52,11 @@ class CirclesController < ApplicationController
   def update
     if @circle.update(circle_params)
       flash[:success] = "Successfully Changed"
+      @tab = "settings"
       redirect_to @circle
     else
       flash[:error] = "Please try again"
+      @tab = "settings"
       redirect_to @circle
     end
   end

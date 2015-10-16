@@ -15,7 +15,7 @@
   </div>
   <!--tab-->
     <div id="myTabContent" class="tab-content" style="padding-top:30px;">
-      <div class="tab-pane fade in active" id="rounds">
+      <div class="tab-pane fade <%= "in active" if @tab == "rounds"|| @tab.blank?%>" id="rounds">
         <% if @practice.active%>
           <%if @practice.method == "stroke"%>
             <%= link_to "Next Round!", new_round_path(practice_id: @practice.id,
@@ -30,8 +30,10 @@
                                                       {:class => "btn btn-info active" }%>
           <%end%>
 
+          <% if !@practice.rounds.blank?%>
           <%= link_to "Rollback", {controller: "players", action: "rollback", practice_id: @practice.id},
                                                     {:class => "btn btn-default" }%>
+          <% end %>
 
 
         <%end%>
@@ -72,7 +74,7 @@
         </table>
         <%end%>
       </div>
-      <div class="tab-pane fade" id="members" style = "padding: 10px 100px ;">
+      <div class="tab-pane fade <%= "in active" if @tab == "members"%>" id="members" style = "padding: 10px 100px ;">
         <% if @practice.method == "stroke"%>
         <pre style="font-size:x-large;"><b>Men</b></pre>
 
@@ -191,7 +193,7 @@
         <%end%>
       </div>
 
-      <div class="tab-pane fade" id="addplayers" style="padding: 10px 100px;">
+      <div class="tab-pane fade <%= "in active" if @tab == "addplayers"%>" id="addplayers" style="padding: 10px 100px;">
         <pre style="font-size:x-large;"><b>Men</b></pre>
           <table class ="table table-striped">
             <thead>
@@ -209,10 +211,10 @@
 
                   <%if player.active%>
                     <td><%= link_to 'active', controller: "players", action: "active",
-                    circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+                    circle_id: @circle.id, player_id: player.id, page: "practices",practice_id: @practice.id, tab: "addplayers"%></td>
                   <%else%>
                     <td><%= link_to '-', controller: "players", action: "active",
-                    circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+                    circle_id: @circle.id, player_id: player.id, page: "practices",practice_id: @practice.id, tab: "addplayers"%></td>
                   <%end%>
               </tr>
               <% end %>
@@ -236,10 +238,10 @@
 
                   <%if player.active%>
                     <td><%= link_to 'active', controller: "players", action: "active",
-                    circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+                    circle_id: @circle.id, player_id: player.id, page: "practices",practice_id: @practice.id, tab: "addplayers"%></td>
                   <%else%>
                     <td><%= link_to '-', controller: "players", action: "active",
-                    circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+                    circle_id: @circle.id, player_id: player.id, page: "practices",practice_id: @practice.id,tab: "addplayers"%></td>
                   <%end%>
                 </tr>
               <% end %>
@@ -247,7 +249,7 @@
           </table>
         </div>
 
-        <div class="tab-pane fade" id="settings">
+        <div class="tab-pane fade <%= "in active" if @tab == "settings"%>" id="settings">
           <div class  ="form-horizontal" role="form">
             <%= form_for @practice, :url => {:action => 'update'}  do |f| %>
               <div class="hidden_field">

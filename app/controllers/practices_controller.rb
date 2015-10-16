@@ -15,6 +15,7 @@ class PracticesController < ApplicationController
     else
       @players = @circle.players.where(group: @group)
     end
+    @tab = params[:tab]
   end
 
   def new
@@ -33,7 +34,9 @@ class PracticesController < ApplicationController
       player.update_attribute(:o_time,0)
       player.update_attribute(:v_time,0)
       player.update_attribute(:duration,0)
-      player.update_attribute(:played_player, "nil")
+      player.update_attribute(:played_player, "noone")
+      player.update_attribute(:past_method, nil)
+      player.update_attribute(:past_duration, nil)
       if player.forbidden.blank?
         player.update_attribute(:played_player, "nil")
       else

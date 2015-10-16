@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151015013720) do
+ActiveRecord::Schema.define(version: 20151015122521) do
 
   create_table "circles", force: :cascade do |t|
     t.string   "name"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20151015013720) do
     t.string   "group"
     t.text     "past_method"
     t.text     "past_duration"
+    t.string   "pre_forbidden"
   end
 
   create_table "practices", force: :cascade do |t|

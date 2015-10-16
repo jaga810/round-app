@@ -66,10 +66,10 @@
 
             <%if player.active%>
               <td><%= link_to 'active', controller: "players", action: "active",
-              circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+              circle_id: @circle.id, player_id: player.id, page: "circles"%></td>
             <%else%>
               <td><%= link_to '-', controller: "players", action: "active",
-              circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+              circle_id: @circle.id, player_id: player.id, page: "circles"%></td>
             <%end%>
 
             <% if !player.group.blank?%>
@@ -135,10 +135,10 @@
 
               <%if player.active%>
                 <td><%= link_to 'active', controller: "players", action: "active",
-                circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+                circle_id: @circle.id, player_id: player.id, page: "circles"%></td>
               <%else%>
                 <td><%= link_to '-', controller: "players", action: "active",
-                circle_id: @circle.id, player_id: player.id, page: request.url%></td>
+                circle_id: @circle.id, player_id: player.id, page: "circles"%></td>
               <%end%>
 
               <% if !player.group.blank?%>
