@@ -8,11 +8,11 @@
 <script type="text/javascript" src="bootstrap.js"></script>
 <link href="bootstrap.css" rel="stylesheet" type="text/css">
 <ul class="nav nav-tabs nav-justified">
-  <li><a href="#members" data-toggle="tab"><%= image_tag 'glyphicons-4-user.png' %>
+  <li><a href="#members" data-toggle="tab"><%= image_tag 'glyphicons-25-parents.png'%>
     Members</a></li>
   <li><a href="#pastpractice" data-toggle="tab"><%= image_tag 'glyphicons-30-notes-2.png' %>
     Past Practice</a></li>
-  <li><a href="#settings" data-toggle="tab"><%= image_tag 'glyphicons-31-pencil.png' %>
+  <li><a href="#settings" data-toggle="tab"><%= image_tag 'glyphicons-137-cogwheel.png' %>
     Settings</a></li>
 </ul>
 <!-- / タブ-->
@@ -33,9 +33,7 @@
           <%= form_tag(@circle, method: "get") do%>
             <div class="form-group">
               <div class="col-sm-2 col-sm-offset-4">
-                <% @groups.unshift("All") %>
                 <%= select :circle,:group,@groups,{} ,class: "form-control"%>
-                <% @groups.delete("All")%>
               </div>
             </div>
 
@@ -52,7 +50,8 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th>State</th>
+            <th><%= link_to "State",controller: "players", action: "active",
+            circle_id: @circle.id, page: "circles", method:"allmen", group: @group %></th>
             <th>Group</th>
             <th>Forbidden</th>
           </tr>
@@ -66,10 +65,10 @@
 
             <%if player.active%>
               <td><%= link_to 'active', controller: "players", action: "active",
-              circle_id: @circle.id, player_id: player.id, page: "circles"%></td>
+              circle_id: @circle.id, player_id: player.id, page: "circles",group: @group%></td>
             <%else%>
               <td><%= link_to '-', controller: "players", action: "active",
-              circle_id: @circle.id, player_id: player.id, page: "circles"%></td>
+              circle_id: @circle.id, player_id: player.id, page: "circles", group: @group%></td>
             <%end%>
 
             <% if !player.group.blank?%>
@@ -102,9 +101,7 @@
           <%= form_tag(@circle, method: "get") do%>
             <div class="form-group">
               <div class="col-sm-2 col-sm-offset-4">
-                <% @groups.unshift("All") %>
                 <%= select :circle,:group,@groups,{} ,class: "form-control"%>
-                <% @groups.delete("All")%>
               </div>
             </div>
 
@@ -121,7 +118,8 @@
         <thead>
           <tr>
             <th>Name</th>
-            <th>State</th>
+            <th><%= link_to "State",controller: "players", action: "active",
+            circle_id: @circle.id, page: "circles", method:"allwomen" %></th>
             <th>Group</th>
             <th>Forbidden</th>
           </tr>
@@ -135,10 +133,10 @@
 
               <%if player.active%>
                 <td><%= link_to 'active', controller: "players", action: "active",
-                circle_id: @circle.id, player_id: player.id, page: "circles"%></td>
+                circle_id: @circle.id, player_id: player.id, page: "circles", group: @group%></td>
               <%else%>
                 <td><%= link_to '-', controller: "players", action: "active",
-                circle_id: @circle.id, player_id: player.id, page: "circles"%></td>
+                circle_id: @circle.id, player_id: player.id, page: "circles", group: @group%></td>
               <%end%>
 
               <% if !player.group.blank?%>

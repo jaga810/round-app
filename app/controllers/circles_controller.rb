@@ -13,16 +13,18 @@ class CirclesController < ApplicationController
   def show
     @group = params[:circle][:group] if !params[:circle].nil?
     @group = params[:group] if !params[:group].nil?
-    @groups = @circle.group.split(" ") if !@circle.group.nil?
+    @groups ||= @circle.group.split(" ")
+    @groups.unshift("All")
     @practices = @circle.practices.all
+
     if @group.blank? || @group == "All"
       @players = @circle.players.all
     else
       @players = @circle.players.where(group: @group)
+      @groups.delete(@group)
+      @groups.unshift(@group)
     end
     @tab = params[:tab]
-    puts "tab?"
-    puts @tab
   end
 
   # GET /circles/new

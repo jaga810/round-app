@@ -3,40 +3,56 @@ class PlayersController < ApplicationController
   before_action :correct_circle, only: [:edit, :update, :destroy]
 
   def active
+    @method = params[:method]
     @circle = Circle.find(params[:circle_id])
-    @player = Player.find(params[:player_id])
-    @practice = Practice.find(params[:practice_id])
-    active = @player.active
-    active = active == true ? false : true
+    @group = params[:group]
 
-    @player.update_attribute(:active, active )
-
-    @m_list = Player.where(active: true, gender: "male")
-    @f_list = Player.where(active: true, gender: "female")
-
-    if active
-      if @player.gender == "male"
-        avg_time = @m_list.average(:time)
-        avg_o_time = @m_list.average(:o_time)
-        avg_v_time = @m_list.average(:v_time)
-
-        @player.update_attribute(:v_time, avg_v_time)
-        @player.update_attribute(:o_time, avg_o_time)
-      else
-        avg_time = @f_list.average(:time)
+    case @method
+    when "allmen"
+      @players = @circle.players.where(gender: "male", group: @group)
+      @players.each do |player|
+        player.update_attribute(:active, false)
       end
+    when "allwomen"
+      @players = @circle.players.where(gender: "female", group: @group)
+      @players.each do |player|
+        player.update_attribute(:active, false)
+      end
+    else
+      @player = Player.find(params[:player_id])
+      active = @player.active
+      active = active == true ? false : true
+
+      @player.update_attribute(:active, active )
+
+      @m_list = Player.where(active: true, gender: "male")
+      @f_list = Player.where(active: true, gender: "female")
+
+      if active
+        if @player.gender == "male"
+          avg_time = @m_list.average(:time)
+          avg_o_time = @m_list.average(:o_time)
+          avg_v_time = @m_list.average(:v_time)
+
+          @player.update_attribute(:v_time, avg_v_time)
+          @player.update_attribute(:o_time, avg_o_time)
+        else
+          avg_time = @f_list.average(:time)
+        end
 
 
-      @player.update_attribute(:time, avg_time)
-      @player.update_attribute(:duration, 100)
+        @player.update_attribute(:time, avg_time)
+        @player.update_attribute(:duration, 100)
+      end
     end
 
     @tab = params[:tab]
     case params[:page]
     when "practices"
-      redirect_to :controller => 'practices', :action => 'show', :id => @practice.id, tab: @tab
+      @practice = Practice.find(params[:practice_id])
+      redirect_to :controller => 'practices', :action => 'show', :id => @practice.id, tab: @tab, group: @group
     else
-      redirect_to @circle
+      redirect_to :controller => 'circles', :action => 'show', id: @circle.id, tab: @tab, group: @group
     end
   end
 
@@ -89,6 +105,7 @@ class PlayersController < ApplicationController
     end
     @forbidden_ls = ["-"]
     @circle.players.each do |player|
+      next if player.com
       @forbidden_ls.push(player.name)
     end
   end
@@ -103,6 +120,7 @@ class PlayersController < ApplicationController
     end
     @forbidden_ls = ["-"]
     @circle.players.each do |player|
+      next if player.com
       @forbidden_ls.push(player.name)
     end
   end
@@ -125,7 +143,7 @@ class PlayersController < ApplicationController
     @circle = @player.circle
 
     if @player.save
-      Player.find(@forbidden).update_attribute(:forbidden, @player.id)
+      Player.find(@forbidden).update_attribute(:forbidden, @player.id) if @forbidden.present?
       redirect_to @circle
     else
       @player = Player.new(player_params,params[:gender])
