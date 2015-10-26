@@ -26,6 +26,11 @@ gem 'bootstrap-sass'
 gem 'sprockets'
 gem 'formtastic-bootstrap'
 
+gem 'twitter-bootswatch-rails'
+gem 'twitter-bootswatch-rails-helpers'
+gem 'execjs'
+gem 'less-rails'
+
 gem 'faker'
 gem 'faker-japanese'
 gem 'bcrypt-ruby','3.1.2'
