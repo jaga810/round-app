@@ -13,6 +13,8 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require_tree .
+//= require flatly/loader
+//= require flatly/bootswatch
+
 //= require bootstrap-sprockets
 //= require data-confirm-modal
