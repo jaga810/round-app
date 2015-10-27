@@ -6,14 +6,29 @@
   <script type="text/javascript" src="bootstrap.js"></script>
   <link href="bootstrap.css" rel="stylesheet" type="text/css">
   <div id="tabs"class="center">
-    <ul class="nav nav-tabs nav-justified">
-      <li class="active"><a href="#rounds" data-toggle="tab"><%= image_tag 'glyphicons-174-play.png'%>Rounds</a></li>
-      <li><a href="#members" data-toggle="tab"><%= image_tag 'glyphicons-25-parents.png'%>Players</a></li>
-      <% if @practice.active %>
-        <li><a href="#addplayers" data-toggle="tab"><%= image_tag 'glyphicons-7-user-add.png'%>AddPlayers</a></li>
-        <li><a href="#settings" data-toggle="tab"><%= image_tag 'glyphicons-137-cogwheel.png' %>Settings</a></li>
-      <% end %>
-    </ul>
+    <% if request.smart_phone?%>
+      <div class="row">
+        <div class="col-xs-offset-2">
+          <ul class="nav nav-tabs nav-justified">
+            <li class="active" style="float:left;"><a href="#rounds" data-toggle="tab"><%= image_tag 'glyphicons-174-play.png'%></a></li>
+            <li style="float:left;"><a href="#members" data-toggle="tab"><%= image_tag 'glyphicons-25-parents.png'%></a></li>
+            <% if @practice.active %>
+              <li style="float:left;"><a href="#addplayers" data-toggle="tab"><%= image_tag 'glyphicons-7-user-add.png'%></a></li>
+              <li style="float:left;"><a href="#settings" data-toggle="tab"><%= image_tag 'glyphicons-137-cogwheel.png' %></a></li>
+            <% end %>
+          </ul>
+        </div>
+      </div>
+    <% else %>
+      <ul class="nav nav-tabs nav-justified">
+        <li class="active"><a href="#rounds" data-toggle="tab"><%= image_tag 'glyphicons-174-play.png'%>Rounds</a></li>
+        <li><a href="#members" data-toggle="tab"><%= image_tag 'glyphicons-25-parents.png'%>Players</a></li>
+        <% if @practice.active %>
+          <li><a href="#addplayers" data-toggle="tab"><%= image_tag 'glyphicons-7-user-add.png'%>AddPlayers</a></li>
+          <li><a href="#settings" data-toggle="tab"><%= image_tag 'glyphicons-137-cogwheel.png' %>Settings</a></li>
+        <% end %>
+      </ul>
+    <%end%>
   </div>
   <!--tab-->
     <div id="myTabContent" class="tab-content" style="padding-top:30px;">
@@ -439,7 +454,7 @@
               </div>
 
               <div class="form-group submit">
-                  <div class="center">
+                  <div class="col-xs-offset-4">
                       <%= f.submit "Confirm", :class => "btn btn-default" %>
                   </div>
               </div>

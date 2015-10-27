@@ -9,14 +9,29 @@
 <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="bootstrap.js"></script>
 <link href="bootstrap.css" rel="stylesheet" type="text/css">
-<ul class="nav nav-tabs nav-justified">
-  <li><a href="#members" data-toggle="tab"><%= image_tag 'glyphicons-25-parents.png'%>
-    Members</a></li>
-  <li><a href="#pastpractice" data-toggle="tab"><%= image_tag 'glyphicons-30-notes-2.png' %>
-    Past Practice</a></li>
-  <li><a href="#settings" data-toggle="tab"><%= image_tag 'glyphicons-137-cogwheel.png' %>
-    Settings</a></li>
-</ul>
+<% if request.smart_phone?%>
+
+  <div class="row">
+    <div class="col-xs-offset-3">
+      <ul class="nav nav-tabs nav-justified">
+        <li style="float:left;"><a href="#members" data-toggle="tab"><%= image_tag 'glyphicons-25-parents.png'%></a></li>
+        <li style="float:left;"><a href="#pastpractice" data-toggle="tab"><%= image_tag 'glyphicons-30-notes-2.png' %></a></li>
+        <li style="float:left;"><a href="#settings" data-toggle="tab"><%= image_tag 'glyphicons-137-cogwheel.png' %></a></li>
+      </ul>
+    </div>
+  </div>
+<% else %>
+
+  <ul class="nav nav-tabs nav-justified">
+    <li><a href="#members" data-toggle="tab"><%= image_tag 'glyphicons-25-parents.png'%>
+      Members</a></li>
+    <li><a href="#pastpractice" data-toggle="tab"><%= image_tag 'glyphicons-30-notes-2.png' %>
+      Past Practice</a></li>
+    <li><a href="#settings" data-toggle="tab"><%= image_tag 'glyphicons-137-cogwheel.png' %>
+      Settings</a></li>
+  </ul>
+
+<% end %>
 <!-- / タブ-->
 
 <div id="myTabContent" class="tab-content center" style="padding-top: 30px ;">

@@ -32,6 +32,8 @@ gem 'twitter-bootswatch-rails-helpers'
 gem 'execjs'
 gem 'less-rails'
 
+gem  'jpmobile'
+
 gem 'faker'
 gem 'faker-japanese'
 gem 'bcrypt-ruby','3.1.2'

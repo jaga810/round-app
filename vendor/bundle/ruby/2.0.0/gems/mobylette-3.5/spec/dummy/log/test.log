@@ -1,0 +1,1 @@
+DEPRECATED > Mobylette: Please don't user :fall_back to configure fall backs any more. See the README for :fallback_chains instead.
