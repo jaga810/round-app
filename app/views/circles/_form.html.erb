@@ -40,14 +40,18 @@
     </div>
 
     <div class="form-group">
+      <div class="col-xs-3 col-xs-offset-3">
       <%= f.submit btn_name, class: "btn btn-default"%>
-      <% if btn_name ="Update"%>
+      </div>
+      <div class="col-xs-2">
+      <% if btn_name =="Update"%>
         <%= link_to 'Delete',@circle, class: "btn btn-danger",method:"delete",
             data: {confirm: "Are you sure to delete '#{@circle.name}'?",
                                                          "commit" => "Delete",
                                                          "cancel" => "Cancel",
                                                          }, title: "Confirmation"%>
       <% end %>
+      </div>
     </div>
   <% end %>
 </div>

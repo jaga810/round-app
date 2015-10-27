@@ -1,46 +1,43 @@
 <h1>New Practice</h1>
 
 <%= render partial: 'shared/error_messages', locals: {object: @practice}%>
+<%= form_for @practice,:class => "form-horizontal" do |f| %>
+<div class="row">
+    <div class="hidden_field">
+      <%= f.hidden_field :circle_id,  :value => @circle_id %>
+    </div>
 
-<div class  ="form-horizontal" role="form">
-<%= simple_form_for(@practice) do |f| %>
-
-  <div class="hidden_field">
-    <%= f.hidden_field :circle_id,  :value => @circle_id %>
-  </div>
-
-  <div class="form-group">
-    <div class="field">
-      <%= f.label :man_rane, "Man Rane",:class=>"col-sm-6 control-label" %>
-      <div class="col-sm-2">
-        <%= f.number_field :man_rane,value:0,:class=>"form-control" %>
+    <div class="form-group">
+      <div class="field">
+        <%= f.label :man_rane, "Man Rane",:class=>"col-sm-6 control-label" %>
+        <div class="col-sm-2">
+          <%= f.number_field :man_rane,value:0,:class=>"form-control" %>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="form-group">
-    <div class="field">
-      <%= f.label :mix_rane, "Mix Rane",:class=>"col-sm-6 control-label" %>
-      <div class="col-sm-2">
-        <%= f.number_field :mix_rane,value: 0,:class=>"form-control" %>
+    <div class="form-group">
+      <div class="field">
+        <%= f.label :mix_rane, "Mix Rane",:class=>"col-sm-6 control-label" %>
+        <div class="col-sm-2">
+          <%= f.number_field :mix_rane,value: 0,:class=>"form-control" %>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="form-group">
-    <div class="field">
-      <%= f.label :method, "Method",:class=>"col-sm-6 control-label" %>
-      <div class="col-sm-2">
-        <%= f.select :method,{"Stroke"=>"stroke","Volley & Stroke"=>"volley"},{},
-        {:class=>"form-control"}%>
+    <div class="form-group">
+      <div class="field">
+        <%= f.label :method, "Method",:class=>"col-sm-6 control-label" %>
+        <div class="col-sm-2">
+          <%= f.select :method,{"Stroke"=>"stroke","Volley & Stroke"=>"volley"},{},
+          {:class=>"form-control"}%>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="form-group center">
-  <%= f.submit "Play!", class: "btn btn-default btn-primary"%>
-    <%= link_to 'Cancel', @circle,class: "btn btn-default"%>
-  </div>
-
-<% end %>
+    <div class="form-group center col-xs-offset-4">
+      <%= f.submit "Play!", class: "btn btn-default btn-primary"%>
+      <%= link_to 'Cancel', @circle,class: "btn btn-default"%>
+    </div>
 </div>
+<% end %>

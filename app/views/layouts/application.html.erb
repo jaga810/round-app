@@ -19,9 +19,9 @@
   </head>
   <body>
 
-
-    <%= yield %>
-
+    <div class="container" style="padding-top: 50px;">
+      <%= yield %>
+    </div>
     <!-- Fixed navbar -->
     <div class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
@@ -36,23 +36,7 @@
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
             <li class="active"><%= link_to "Home", root_path%></li>
-            <li><a href="#about">About</a></li>
             <li><a href="#contact">Help</a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Account <b class="caret"></b></a>
-              <ul class="dropdown-menu">
-                <li><%= link_to "Members", circle_path(id: current_circle.id,tab: "members") %></li>
-                <% if !current_circle.practices.blank?  %>
-                <li><%= link_to "Practice in Progress", practice_path(id: current_circle.practices.last,tab: "rounds") %></li>
-                <% end %>
-                <li><%= link_to "New Practice", new_practice_path(circle_id: current_circle.id) %></li>
-                <li><%= link_to "Past Practice", circle_path(id: current_circle.id,tab: "pastpractice") %></li>
-                <li><%= link_to "Settings", circle_path(id: current_circle.id,tab: "settings") %></li>
-                <li class="divider"></li>
-                <li class="dropdown-header">Nav header</li>
-                <li><%= link_to "Sign out",'/signout' , method: "delete" %></li>
-              </ul>
-            </li>
 
             <% if signed_in?%>
               <li class="dropdown">

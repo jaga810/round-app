@@ -1,6 +1,8 @@
 <p id="notice"><%= notice %></p>
-<div style="margin-bottom: 50px;">
-  <h1><%= @circle.name %></h1>
+<div style="margin-bottom: 5px; margin-top:50px;">
+  <div class="page-header">
+    <h1 class="text-center"><%= @circle.name %></h1>
+  </div>
 </div>
 
 <!--タブ-->
@@ -18,180 +20,198 @@
 <!-- / タブ-->
 
 <div id="myTabContent" class="tab-content center" style="padding-top: 30px ;">
-  <div class="tab-pane fade <%= "in active" if @tab == "members"|| @tab.blank?%>" id="members" style="padding: 10px 100px;">
-    <div class="center" style="padding-bottom: 20px;">
-    <%= link_to "New Member!", new_player_path(circle_id: @circle.id),
-                              class: "btn btn-lg btn-default" %>
-    </div>
+  <div class="tab-pane fade <%= "in active" if @tab == "members"|| @tab.blank?%>" id="members" style="">
+
+      <div class="col-xs-offset-3 col-sm-offset-5" style="padding-bottom: 20px;">
+      <%= link_to "New Member!", new_player_path(circle_id: @circle.id),
+                                class: "btn btn-lg btn-primary text-center" %>
+      </div>
 
 
     <% if !@players.where(gender: "male").blank?%>
-      <pre style="font-size:x-large;"><b>Men</b></pre>
-
-      <% if !@circle.group.blank?%>
-        <div calss="center form-inline" role="form">
-          <%= form_tag(@circle, method: "get") do%>
-            <div class="form-group">
-              <div class="col-sm-2 col-sm-offset-4">
-                <%= select :circle,:group,@groups,{} ,class: "form-control"%>
-              </div>
-            </div>
-
-            <div class="form-group">
-              <div class="col-sm-2 col-sm-offset-0">
-                <%= submit_tag "Seach", class: "btn btn-default"%>
-              </div>
-            </div>
-          <% end %>
+    <div class="row">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title text-center">Men</h3>
         </div>
-      <%end%>
+        <div class="panel-body">
+          <% if !@circle.group.blank?%>
+            <div calss= "form-inline" role="form">
+              <%= form_tag(@circle, method: "get") do%>
+                <div class="form-group">
+                  <div class="col-sm-2 col-sm-offset-4 col-xs-8">
+                    <%= select :circle,:group,@groups,{} ,class: "form-control"%>
+                  </div>
+                </div>
 
-      <table class ="table table-hover" style="padding:20px;">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th><%= link_to "State",controller: "players", action: "active",
-            circle_id: @circle.id, page: "circles", method:"allmen", group: @group %></th>
-            <th>Group</th>
-            <th>Forbidden</th>
-          </tr>
-        </thead>
+                <div class="form-group">
+                  <div class="col-sm-2 col-sm-offset-0">
+                    <%= submit_tag "Seach", class: "btn btn-default"%>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <%end%>
 
-        <tbody>
-          <% @players.each do |player| %>
-          <% next if player.gender == "female" ||player.com%>
-          <tr>
-            <td><%= player.name %></td>
+          <table class ="table table-hover" style="padding:20px;">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th><%= link_to "State",controller: "players", action: "active",
+                circle_id: @circle.id, page: "circles", method:"allmen", group: @group %></th>
+                <th>Group</th>
+                <th>Miss</th>
+              </tr>
+            </thead>
 
-            <%if player.active%>
-              <td><%= link_to 'active', controller: "players", action: "active",
-              circle_id: @circle.id, player_id: player.id, page: "circles",group: @group%></td>
-            <%else%>
-              <td><%= link_to '-', controller: "players", action: "active",
-              circle_id: @circle.id, player_id: player.id, page: "circles", group: @group%></td>
-            <%end%>
+            <tbody>
+              <% @players.each do |player| %>
+              <% next if player.gender == "female" ||player.com%>
+              <tr>
+                <td><%= link_to player.name, edit_player_path(player,circle_id: @circle.id) %>
 
-            <% if !player.group.blank?%>
-              <% group = player.group%>
-              <td><%= link_to group , group: group%></td>
-            <% else %>
-              <td>-</td>
-            <%end%>
+                <%if player.active%>
+                  <td><%= link_to '◯', controller: "players", action: "active",
+                  circle_id: @circle.id, player_id: player.id, page: "circles",group: @group%></td>
+                <%else%>
+                  <td><%= link_to '-', controller: "players", action: "active",
+                  circle_id: @circle.id, player_id: player.id, page: "circles", group: @group%></td>
+                <%end%>
 
-              <% if !player.forbidden.blank?%>
-                <% f_list = player.forbidden.split(" ")%>
-                <% f_list.each do |player_id|%>
-                  <td><%= Player.find(player_id.to_i).name%></td>
-                <% end %>
-              <% else %>
-                <td>-</td>
-              <%end%>
-              <td><%=link_to "edit", edit_player_path(player, circle_id: @circle.id)%></td>
-          </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <%end%>
+                <% if !player.group.blank?%>
+                  <% group = player.group%>
+                  <td><%= link_to group , group: group%></td>
+                <% else %>
+                  <td>-</td>
+                <%end%>
 
+                  <% if !player.forbidden.blank?%>
+                    <% f_list = player.forbidden.split(" ")%>
+                    <% f_list.each do |player_id|%>
+                      <td><%= Player.find(player_id.to_i).name%></td>
+                    <% end %>
+                  <% else %>
+                    <td>-</td>
+                  <%end%>
+              </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <% end %>
     <% if !@players.where(gender: "female").blank?%>
-      <pre style="font-size:x-large;"><b>Women</b></pre>
+      <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title text-center">Women</h3>
+          </div>
+          <% if !@circle.group.blank?%>
+            <div calss="center form-inline" role="form">
+              <%= form_tag(@circle, method: "get") do%>
+                <div class="form-group">
+                  <div class="col-sm-2 col-sm-offset-4 col-xs-8">
+                    <%= select :circle,:group,@groups,{} ,class: "form-control"%>
+                  </div>
+                </div>
 
-      <% if !@circle.group.blank?%>
-        <div calss="center form-inline" role="form">
-          <%= form_tag(@circle, method: "get") do%>
-            <div class="form-group">
-              <div class="col-sm-2 col-sm-offset-4">
-                <%= select :circle,:group,@groups,{} ,class: "form-control"%>
-              </div>
+                <div class="form-group">
+                  <div class="col-sm-2 col-sm-offset-0">
+                    <%= submit_tag "Seach", class: "btn btn-default"%>
+                  </div>
+                </div>
+              <% end %>
             </div>
+          <%end%>
 
-            <div class="form-group">
-              <div class="col-sm-2 col-sm-offset-0">
-                <%= submit_tag "Seach", class: "btn btn-default"%>
-              </div>
-            </div>
-          <% end %>
+          <table class ="table table-hover" style="padding:20px;">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th><%= link_to "State",controller: "players", action: "active",
+                circle_id: @circle.id, page: "circles", method:"allwomen" %></th>
+                <th>Group</th>
+                <th>Miss</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <% @players.each do |player| %>
+              <% next if player.gender == "male" || player.com %>
+                <tr>
+                  <td><%= link_to player.name, edit_player_path(player,circle_id: @circle.id) %>
+                  </td>
+
+                  <%if player.active%>
+                    <td><%= link_to 'active', controller: "players", action: "active",
+                    circle_id: @circle.id, player_id: player.id, page: "circles", group: @group%></td>
+                  <%else%>
+                    <td><%= link_to '-', controller: "players", action: "active",
+                    circle_id: @circle.id, player_id: player.id, page: "circles", group: @group%></td>
+                  <%end%>
+
+                  <% if !player.group.blank?%>
+                    <% group = player.group%>
+                    <td><%= link_to group , group: group%></td>
+                  <% else %>
+                    <td>-</td>
+                  <%end%>
+
+                  <% if !player.forbidden.blank?%>
+                  <% f_list = player.forbidden.split(" ")%>
+                    <% f_list.each do |player_id|%>
+                      <td><%= Player.find(player_id.to_i).name%></td>
+                    <% end %>
+                  <%else%>
+                    <td>-</td>
+                  <%end%>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
         </div>
+      </div>
       <%end%>
+    </div>
 
-      <table class ="table table-hover" style="padding:20px;">
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th><%= link_to "State",controller: "players", action: "active",
-            circle_id: @circle.id, page: "circles", method:"allwomen" %></th>
-            <th>Group</th>
-            <th>Forbidden</th>
-          </tr>
-        </thead>
-
-        <tbody>
-          <% @players.each do |player| %>
-          <% next if player.gender == "male" || player.com %>
-            <tr>
-              <td><%= player.name %></td>
-
-              <%if player.active%>
-                <td><%= link_to 'active', controller: "players", action: "active",
-                circle_id: @circle.id, player_id: player.id, page: "circles", group: @group%></td>
-              <%else%>
-                <td><%= link_to '-', controller: "players", action: "active",
-                circle_id: @circle.id, player_id: player.id, page: "circles", group: @group%></td>
-              <%end%>
-
-              <% if !player.group.blank?%>
-                <% group = player.group%>
-                <td><%= link_to group , group: group%></td>
-              <% else %>
-                <td>-</td>
-              <%end%>
-
-              <% if !player.forbidden.blank?%>
-              <% f_list = player.forbidden.split(" ")%>
-                <% f_list.each do |player_id|%>
-                  <td><%= Player.find(player_id.to_i).name%></td>
-                <% end %>
-              <%else%>
-                <td>-</td>
-              <%end%>
-              <td><%=link_to "edit", edit_player_path(player, circle_id: @circle.id)%></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
-    <%end%>
-  </div>
-
-  <div class="tab-pane fade <%= "in active" if @tab =="pastpractice"%>" id="pastpractice" style="padding: 10px 100px;">
-    <div class="center" style="padding-bottom: 20px;">
+  <div class="tab-pane fade <%= "in active" if @tab =="pastpractice"%>" id="pastpractice" style="">
+    <div class="col-sm-offset-5 col-sm-2 col-xs-offset-3" style="padding-bottom: 20px;">
       <%= link_to "Practice!", new_practice_path(circle_id: @circle.id,
                                                 method: "stroke",
                                                 mix_rane: "2",
                                                 man_rane: "2"),
-                                class: "btn btn-lg btn-default" %>
+                                class: "btn btn-lg btn-primary" %>
     </div>
     <% if !@practices.blank?%>
-      <table class ="table table-hover">
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Method</th>
-            <th>Round</th>
-          </tr>
-        </thead>
+      <div class="row">
+        <div class="panel panel-default col-xs-12">
+          <div class="panel-heading">
+            <h3 class="panel-title text-center">Past Practice</h3>
+          </div>
+          <table class ="table table-hover">
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Method</th>
+                <th>Round</th>
+              </tr>
+            </thead>
 
-        <tbody>
-          <% @practices.reverse_each do |practice| %>
-            <tr>
-              <td><%= needed_time(practice.created_at) %></td>
-              <% td = practice.method == "stroke" ? "Stroke" : "Volley & Stroke"%>
-              <td><%= td %></td>
-              <td><%= practice.rounds.count %></td>
-              <td><%= link_to "show", practice_path(practice)%></td>
-            </tr>
-          <% end %>
-        </tbody>
-      </table>
+            <tbody>
+              <% @practices.reverse_each do |practice| %>
+                <tr>
+                  <td><%= needed_time(practice.created_at) %></td>
+                  <% td = practice.method == "stroke" ? "Stroke" : "Volley & Stroke"%>
+                  <td><%= td %></td>
+                  <td><%= practice.rounds.count %></td>
+                  <td><%= link_to "show", practice_path(practice)%></td>
+                </tr>
+              <% end %>
+            </tbody>
+          </table>
+        </div>
+      </div>
     <% end%>
   </div>
 

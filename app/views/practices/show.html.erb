@@ -1,6 +1,6 @@
 <div class="center hero-unit">
-  <h1><%= title = @practice.method == "stroke" ? "Stroke" : "Volley & Stroke" %></h1>
-  <div id="content" class="container" style="padding:30px; margin:30px;">
+  <h1 class="text-center"><%= title = @practice.method == "stroke" ? "Stroke" : "Volley & Stroke" %></h1>
+  <div id="content" class="container" style="">
   <!--tab-->
   <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
   <script type="text/javascript" src="bootstrap.js"></script>
@@ -18,73 +18,82 @@
   <!--tab-->
     <div id="myTabContent" class="tab-content" style="padding-top:30px;">
       <div class="tab-pane fade <%= "in active" if @tab == "rounds"|| @tab.blank?%>" id="rounds">
-        <% if @practice.active%>
-          <%if @practice.method == "stroke"%>
-            <%= link_to "Next Round!", new_round_path(practice_id: @practice.id,
-                                                      man_rane: @practice.man_rane,
-                                                      mix_rane: @practice.mix_rane),
-                                                      class: "btn btn-info active" %>
-          <%else%>
-            <%= link_to "Next Round!", {controller: "vs_rounds", action: "new",
-                                                      practice_id: @practice.id,
-                                                      man_rane: @practice.man_rane,
-                                                      mix_rane: @practice.mix_rane},
-                                                      {:class => "btn btn-info active" }%>
+        <div class="row">
+          <% if @practice.active%>
+            <div class="col-xs-offset-3">
+              <%if @practice.method == "stroke"%>
+                <%= link_to "Next!", new_round_path(practice_id: @practice.id,
+                                                          man_rane: @practice.man_rane,
+                                                          mix_rane: @practice.mix_rane),
+                                                          class: "btn btn-primary" %>
+              <%else%>
+                <%= link_to "Next!", {controller: "vs_rounds", action: "new",
+                                                          practice_id: @practice.id,
+                                                          man_rane: @practice.man_rane,
+                                                          mix_rane: @practice.mix_rane},
+                                                          {:class => "btn btn-primary" }%>
+              <%end%>
+
+            <% if !@practice.rounds.blank?%>
+            <%= link_to "Back", {controller: "players", action: "rollback", practice_id: @practice.id},
+                                                      {:class => "btn btn-default" }%>
+            <% end %>
+          </div>
+
+
           <%end%>
 
           <% if !@practice.rounds.blank?%>
-          <%= link_to "Rollback", {controller: "players", action: "rollback", practice_id: @practice.id},
-                                                    {:class => "btn btn-default" }%>
-          <% end %>
-
-
-        <%end%>
-
-        <% if !@practice.rounds.blank?%>
-        <table class ="table table-striped">
-          <thead>
-            <tr>
-              <th>Round</th>
-              <% @ranes.times do |n| %>
-                <th><%=(n+1)%></th>
-                <%if @practice.method == "stroke"%>
-                  <th></th>
-                <%else%>
-                  <th><small>Volley</small></th>
-                <%end%>
-              <%end%>
-            </tr>
-          </thead>
-
-          <tbody>
-              <% @rounds.reverse_each do |round| %>
-              <% ranes = round.mix_rane + round.man_rane %>
-              <% now_players = round.now_players.split(" ")%>
+          <table class ="table table-striped">
+            <thead>
               <tr>
-                <td><%= "#{round.order.ordinalize}"%></td>
-                  <% (ranes * 2).times do |n| %>
-                   <% player = Player.find(now_players[n].to_i)%>
-                    <% if player.com %>
-                      <td>anyone</td>
-                    <%else%>
-                      <td><%=player.name%></td>
-                    <%end%>
+                <th>Round</th>
+                <% @ranes.times do |n| %>
+                  <th><%=(n+1)%></th>
+                  <%if @practice.method == "stroke"%>
+                    <th></th>
+                  <%else%>
+                    <th><small>Volley</small></th>
                   <%end%>
+                <%end%>
               </tr>
-              <% end %>
-          </tbody>
-        </table>
-        <%end%>
+            </thead>
+
+            <tbody>
+                <% @rounds.reverse_each do |round| %>
+                <% ranes = round.mix_rane + round.man_rane %>
+                <% now_players = round.now_players.split(" ")%>
+                <tr>
+                  <td><%= "#{round.order.ordinalize}"%></td>
+                    <% (ranes * 2).times do |n| %>
+                     <% player = Player.find(now_players[n].to_i)%>
+                      <% if player.com %>
+                        <td>anyone</td>
+                      <%else%>
+                        <td><%=player.name%></td>
+                      <%end%>
+                    <%end%>
+                </tr>
+                <% end %>
+            </tbody>
+          </table>
+          <%end%>
+        </div>
       </div>
-      <div class="tab-pane fade <%= "in active" if @tab == "members"%>" id="members" style = "padding: 10px 100px ;">
+      <div class="tab-pane fade <%= "in active" if @tab == "members"%>" id="members" style = "">
         <% if @practice.method == "stroke"%>
-        <pre style="font-size:x-large;"><b>Men</b></pre>
+        <div class="row">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title text-center">Men</h3>
+            </div>
+            <div class="panel-body">
 
         <% if !@circle.group.blank?%>
           <div calss="center form-inline" role="form">
             <%= form_tag(@practice, method: "get") do%>
               <div class="form-group">
-                <div class="col-sm-2 col-sm-offset-4">
+                <div class="col-sm-2 col-sm-offset-4 col-xs-8">
                   <% @groups.unshift("All") %>
                   <%= select :circle,:group,@groups,{} ,class: "form-control"%>
                   <% @groups.delete("All")%>
@@ -122,8 +131,32 @@
               <% end %>
             </tbody>
           </table>
+        </div>
+      </div>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title text-center">Women</h3>
+        </div>
+        <div class="panel-body">
+          <% if !@circle.group.blank?%>
+            <div calss="center form-inline" role="form">
+              <%= form_tag(@practice, method: "get") do%>
+                <div class="form-group">
+                  <div class="col-sm-2 col-sm-offset-4 col-xs-8">
+                    <% @groups.unshift("All") %>
+                    <%= select :circle,:group,@groups,{} ,class: "form-control"%>
+                    <% @groups.delete("All")%>
+                  </div>
+                </div>
 
-          <pre style="font-size:x-large;"><b>Women</b></pre>
+                <div class="form-group">
+                  <div class="col-sm-2 col-sm-offset-0">
+                    <%= submit_tag "Seach", class: "btn btn-default"%>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <%end%>
           <table class ="table table-striped">
             <thead>
               <tr>
@@ -144,8 +177,35 @@
               <% end %>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
         <%else%>
-        <pre style="font-size:x-large;"><b>Men</b></pre>
+        <div class=row>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title text-center">Men</h3>
+          </div>
+          <div class="panel-body">
+            <% if !@circle.group.blank?%>
+              <div calss="center form-inline" role="form">
+                <%= form_tag(@practice, method: "get") do%>
+                  <div class="form-group">
+                    <div class="col-sm-2 col-sm-offset-4 col-xs-8">
+                      <% @groups.unshift("All") %>
+                      <%= select :circle,:group,@groups,{} ,class: "form-control"%>
+                      <% @groups.delete("All")%>
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="col-sm-2 col-sm-offset-0">
+                      <%= submit_tag "Seach", class: "btn btn-default"%>
+                    </div>
+                  </div>
+                <% end %>
+              </div>
+            <%end%>
           <table class ="table table-striped">
             <thead>
               <tr>
@@ -170,8 +230,33 @@
               <% end %>
             </tbody>
           </table>
+        </div>
+      </div>
 
-          <pre style="font-size:x-large;"><b>Women</b></pre>
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title text-center">Women</h3>
+        </div>
+        <div class="panel-body">
+          <% if !@circle.group.blank?%>
+            <div calss="center form-inline" role="form">
+              <%= form_tag(@practice, method: "get") do%>
+                <div class="form-group">
+                  <div class="col-sm-2 col-sm-offset-4 col-xs-8">
+                    <% @groups.unshift("All") %>
+                    <%= select :circle,:group,@groups,{} ,class: "form-control"%>
+                    <% @groups.delete("All")%>
+                  </div>
+                </div>
+
+                <div class="form-group">
+                  <div class="col-sm-2 col-sm-offset-0">
+                    <%= submit_tag "Seach", class: "btn btn-default"%>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          <%end%>
           <table class ="table table-striped">
             <thead>
               <tr>
@@ -192,16 +277,25 @@
               <% end %>
             </tbody>
           </table>
+        </div>
+      </div>
+    </div>
         <%end%>
       </div>
 
-      <div class="tab-pane fade <%= "in active" if @tab == "addplayers"%>" id="addplayers" style="padding: 10px 100px;">
-        <pre style="font-size:x-large;"><b>Men</b></pre>
+      <div class="tab-pane fade <%= "in active" if @tab == "addplayers"%>" id="addplayers" style"">
+        <div class="row">
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h3 class="panel-title text-center">Men</h3>
+            </div>
+            <div class="panel-body">
+
         <% if !@circle.group.blank?%>
           <div calss="center form-inline" role="form">
             <%= form_tag(@circle, method: "get") do%>
               <div class="form-group">
-                <div class="col-sm-2 col-sm-offset-4">
+                <div class="col-sm-2 col-sm-offset-4 col-xs-8">
                   <% @groups.unshift("All") %>
                   <%= select :circle,:group,@groups,{} ,class: "form-control"%>
                   <% @groups.delete("All")%>
@@ -249,13 +343,19 @@
               <% end %>
             </tbody>
           </table>
+        </div>
+      </div>
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title text-center">Women</h3>
+          </div>
+          <div class="panel-body">
 
-          <pre style="font-size:x-large;"><b>Women</b></pre>
           <% if !@circle.group.blank?%>
             <div calss="center form-inline" role="form">
               <%= form_tag(@circle, method: "get") do%>
                 <div class="form-group">
-                  <div class="col-sm-2 col-sm-offset-4">
+                  <div class="col-sm-2 col-sm-offset-4 col-xs-8">
                     <% @groups.unshift("All") %>
                     <%= select :circle,:group,@groups,{} ,class: "form-control"%>
                     <% @groups.delete("All")%>
@@ -305,6 +405,9 @@
             </tbody>
           </table>
         </div>
+      </div>
+    </div>
+  </div>
 
         <div class="tab-pane fade <%= "in active" if @tab == "settings"%>" id="settings">
           <div class  ="form-horizontal" role="form">
