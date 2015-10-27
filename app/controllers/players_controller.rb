@@ -10,11 +10,13 @@ class PlayersController < ApplicationController
     case @method
     when "allmen"
       @players = @circle.players.where(gender: "male", group: @group)
+      @players = @circle.players.where(gender: "male") if @group.nil?
       @players.each do |player|
         player.update_attribute(:active, false)
       end
     when "allwomen"
       @players = @circle.players.where(gender: "female", group: @group)
+      @players = @circle.players.where(gender: "female") if @group.nil?
       @players.each do |player|
         player.update_attribute(:active, false)
       end
