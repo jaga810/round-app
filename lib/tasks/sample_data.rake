@@ -5,8 +5,8 @@ namespace :db do
       @circle = Circle.create!(
       name: "Lemon Smash",
       email: "lemon#{n+1}@example.com",
-      password: "foobar",
-      password_confirmation: "foobar",
+      password: "satoshi",
+      password_confirmation: "satoshi",
       group: "39th 40th 41st"
       )
 
