@@ -55,7 +55,11 @@
     <div class="form-group">
       <div class="col-xs-offset-3">
         <%= f.submit "Update!", class: "btn btn-default btn-primary"%>
-        <%= link_to 'Cancel', players_path,class: "btn btn-default"%>
+        <%= link_to 'Delete',@player, class: "btn btn-danger",method:"delete",
+            data: {confirm: "Are you sure to delete '#{@player.name}'?",
+                                                         "commit" => "Delete",
+                                                         "cancel" => "Cancel",
+                                                         }, title: "Confirmation"%>
       </div>
     </div>
   <% end %>

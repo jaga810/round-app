@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   get '/player/active', to: 'players#active'
   get '/vs_rounds/new', to: 'vs_rounds#new'
   get '/player/rollback', to: 'players#rollback'
+  get '/help', to: 'static_pages#help'
 
   match '/signup', to: 'circles#new', via: 'get'
   match '/signin', to: 'sessions#new', via: 'get'

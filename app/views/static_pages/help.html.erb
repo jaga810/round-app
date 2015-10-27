@@ -1,0 +1,198 @@
+<div class="jumbotron">
+  <h1>Help</h1>
+  <h5>独特の用語が出てくる事が多くてわかりにくいかもしれません。すみません;w;
+  <br>ここの説明がほしいとか、ここ変えたほうがいいよとかあったらよろしくお願いします！</h5>
+</div>
+<div class="jumbotron">
+  <h1>Circle Page</h1>
+  <div class="row">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center"><%= image_tag 'glyphicons-25-parents.png'%>Members Tab</h3>
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">New Member!</h3>
+            <h5 class="list-group-item-text">新しいメンバーを追加します</h5>
+          </a>
+          <a href="#" class="list-group-item ">
+            <h3 class="list-group-item-heading">Search</h3>
+            <h5 class="list-group-item-text">人をGroup別に表示します</h5>
+          </a>
+          <a href="#" class="list-group-item ">
+            <h3 class="list-group-item-heading">Name</h3>
+            <h5 class="list-group-item-text">メンバーの名前です。メンバーの編集リンクになっています</h5>
+          </a>
+          <a href="#" class="list-group-item ">
+            <h3 class="list-group-item-heading">State</h3>
+            <h5 class="list-group-item-text">Stateは現在メンバーが練習に参加しているかどうかを表します<br>active/-ボタンを押すとStateが入れ替わります
+              <br>Stateボタンを押すと表示されている人全員が"-"(rest)状態になります</h5>
+          </a>
+          <a href="#" class="list-group-item ">
+            <h3 class="list-group-item-heading">Miss</h3>
+            <h5 class="list-group-item-text">一緒にプレーしない相手が表示されます</h5>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center"><%= image_tag 'glyphicons-30-notes-2.png' %>Past Practice Tab</h3>
+      </div>
+      <div class="panel-body">
+        <div class="panel-body">
+          <div class="list-group">
+            <a href="#" class="list-group-item">
+              <h3 class="list-group-item-heading">Practice!</h3>
+              <h5 class="list-group-item-text">新しい練習をつくります。練習の種類はストスト・ボレストから選べます。</h5>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center"><%= image_tag 'glyphicons-137-cogwheel.png' %>Settings Tab</h3>
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Name</h3>
+            <h5 class="list-group-item-text">サークル名です</h5>
+          </a>
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Email</h3>
+            <h5 class="list-group-item-text">サークルのEmailアドレスです</h5>
+          </a>
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Group</h3>
+            <h5 class="list-group-item-text">サークルのメンバーのGroupです。例えば入った代などでソートしたい場合に用います。
+              <br>書き方は、半角スペースをGroup一つ毎に空けて書きます。
+              <br>例）group1 group2</h5>
+          </a>
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Update</h3>
+            <h5 class="list-group-item-text">上記の内容を保存・更新します</h5>
+          </a>
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Delete</h3>
+            <h5 class="list-group-item-text">Circleを削除します</h5>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="jumbotron">
+  <h1>Practice Page</h1>
+  <div class="row">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center"><%= image_tag 'glyphicons-30-notes-2.png' %>New Practice</h3>
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Man Rane</h3>
+            <h5 class="list-group-item-text">男子同士で入るレーンの数です</h5>
+          </a>
+          <a href="#" class="list-group-item ">
+            <h3 class="list-group-item-heading">Mix Rane</h3>
+            <h5 class="list-group-item-text">男女で入るレーンの数です</h5>
+          </a>
+          <a href="#" class="list-group-item ">
+            <h3 class="list-group-item-heading">Method</h3>
+            <h5 class="list-group-item-text">練習方法です。ストストとボレストから選ぶことができます</h5>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center"><%= image_tag 'glyphicons-174-play.png'%>Rounds Tab</h3>
+      </div>
+      <div class="panel-body">
+        <div class="panel-body">
+          <div class="list-group">
+            <a href="#" class="list-group-item">
+              <h3 class="list-group-item-heading">Next!</h3>
+              <h5 class="list-group-item-text">Roundを進めます。<br>連打すると一気にラウンドが入ってしまうことがあるので注意してください。</h5>
+            </a>
+            <a href="#" class="list-group-item">
+              <h3 class="list-group-item-heading">Back</h3>
+              <h5 class="list-group-item-text">Roundを一つ戻します。間違ってRoundを進めてしまった時に使います。</h5>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center"><%= image_tag 'glyphicons-25-parents.png'%>Players Tab</h3>
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Tabの説明</h3>
+            <h5 class="list-group-item-text">現在アクティブなメンバーのみが表示されます。</h5>
+          </a>
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Men</h3>
+            <h5 class="list-group-item-text">男子同士のラウンドに入った回数です</h5>
+          </a>
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Stroke</h3>
+            <h5 class="list-group-item-text">男子同士のボレストラウンドで、台に入った回数です</h5>
+          </a>
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Volley</h3>
+            <h5 class="list-group-item-text">男子同士のボレストラウンドで、ボレーに入った回数です</h5>
+          </a>
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Mix</h3>
+            <h5 class="list-group-item-text">ミックスラウンドに入った回数です</h5>
+          </a>
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Duration</h3>
+            <h5 class="list-group-item-text">前回ラウンドに入ってから何回ラウンドが過ぎたかを示します。
+                <br>Durationが大きいほど次回のラウンドに入りやすくなります。
+                <br>途中参加した場合100になります。そのためすぐラウンドに入れます。</h5>
+          </a>
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Delete</h3>
+            <h5 class="list-group-item-text">Circleを削除します</h5>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center"><%= image_tag 'glyphicons-7-user-add.png'%>AddPlayers</h3>
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Tabの説明</h3>
+            <h5 class="list-group-item-text">activeなメンバーをrest状態にしたり、rest状態のメンバーをactiveにしたりします。
+            <br>途中参加・途中帰宅が起こった場合に使います。</h5>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title text-center"><%= image_tag 'glyphicons-137-cogwheel.png' %>Settings</h3>
+      </div>
+      <div class="panel-body">
+        <div class="list-group">
+          <a href="#" class="list-group-item">
+            <h3 class="list-group-item-heading">Tabの説明</h3>
+            <h5 class="list-group-item-text">Man Rane, Mix Raneの数を変えることができます。</h5>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
