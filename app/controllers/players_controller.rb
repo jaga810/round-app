@@ -27,8 +27,8 @@ class PlayersController < ApplicationController
 
       @player.update_attribute(:active, active )
 
-      @m_list = Player.where(active: true, gender: "male")
-      @f_list = Player.where(active: true, gender: "female")
+      @m_list = @circle.players.where(active: true, gender: "male")
+      @f_list = @circle.players.where(active: true, gender: "female")
 
       if active
         if @player.gender == "male"
@@ -41,8 +41,6 @@ class PlayersController < ApplicationController
         else
           avg_time = @f_list.average(:time)
         end
-
-
         @player.update_attribute(:time, avg_time)
         @player.update_attribute(:duration, 100)
       end
