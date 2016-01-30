@@ -10,7 +10,6 @@
 <script type="text/javascript" src="bootstrap.js"></script>
 <link href="bootstrap.css" rel="stylesheet" type="text/css">
 <% if request.smart_phone?%>
-
   <div class="row">
     <div class="col-xs-offset-3">
       <ul class="nav nav-tabs nav-justified">
@@ -21,81 +20,76 @@
     </div>
   </div>
 <% else %>
-
   <ul class="nav nav-tabs nav-justified">
     <li><a href="#members" data-toggle="tab"><%= image_tag 'glyphicons-25-parents.png'%>Members</a></li>
     <li><a href="#pastpractice" data-toggle="tab"><%= image_tag 'glyphicons-30-notes-2.png' %>Past Practice</a></li>
     <li><a href="#settings" data-toggle="tab"><%= image_tag 'glyphicons-137-cogwheel.png' %>Settings</a></li>
   </ul>
-
 <% end %>
 <!-- / タブ-->
 
 <div id="myTabContent" class="tab-content center" style="padding-top: 30px ;">
   <div class="tab-pane fade <%= "in active" if @tab == "members"|| @tab.blank?%>" id="members" style="">
-
-      <div class="col-xs-offset-3 col-sm-offset-5" style="padding-bottom: 20px;">
+    <div class="col-xs-offset-3 col-sm-offset-5" style="padding-bottom: 20px;">
       <%= link_to "New Member!", new_player_path(circle_id: @circle.id),
                                 class: "btn btn-lg btn-primary text-center" %>
-      </div>
-
-
+    </div>
     <% if !@players.where(gender: "male").blank?%>
-    <div class="row">
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <h3 class="panel-title text-center">Men</h3>
-        </div>
-        <div class="panel-body">
-          <% if !@circle.group.blank?%>
-            <div calss= "form-inline" role="form">
-              <%= form_tag(@circle, method: "get") do%>
-                <div class="form-group">
-                  <div class="col-sm-2 col-sm-offset-4 col-xs-8">
-                    <%= select :circle,:group,@groups,{} ,class: "form-control"%>
+      <div class="row">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3 class="panel-title text-center">Men</h3>
+          </div>
+          <div class="panel-body">
+            <% if !@circle.group.blank?%>
+              <div calss= "form-inline" role="form">
+                <%= form_tag(@circle, method: "get") do%>
+                  <div class="form-group">
+                    <div class="col-sm-2 col-sm-offset-4 col-xs-8">
+                      <%= select :circle,:group,@groups,{} ,class: "form-control"%>
+                    </div>
                   </div>
-                </div>
 
-                <div class="form-group">
-                  <div class="col-sm-2 col-sm-offset-0">
-                    <%= submit_tag "Seach", class: "btn btn-default"%>
+                  <div class="form-group">
+                    <div class="col-sm-2 col-sm-offset-0">
+                      <%= submit_tag "Seach", class: "btn btn-default"%>
+                    </div>
                   </div>
-                </div>
-              <% end %>
-            </div>
-          <%end%>
+                <% end %>
+              </div>
+            <%end%>
 
-          <table class ="table table-hover" style="padding:20px;">
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th><%= link_to "State",controller: "players", action: "active",
-                circle_id: @circle.id, page: "circles", method:"allmen", group: @group %></th>
-                <th>Group</th>
-                <th>Miss</th>
-              </tr>
-            </thead>
+            <table class ="table table-hover" style="padding:20px;">
+              <thead>
+                <tr>
+                  <th>Name</th>
+                  <th><%= link_to "State",controller: "players", action: "active",
+                  circle_id: @circle.id, page: "circles", method:"allmen", group: @group %></th>
+                  <th>Group</th>
+                  <th>Miss</th>
+                </tr>
+              </thead>
 
-            <tbody>
-              <% @players.each do |player| %>
-              <% next if player.gender == "female" ||player.com%>
-              <tr>
-                <td><%= link_to player.name, edit_player_path(player,circle_id: @circle.id) %>
+              <tbody>
+                <% @players.each do |player| %>
+                <% next if player.gender == "female" ||player.com%>
+                <tr>
+                  <td><%= link_to player.name, edit_player_path(player,circle_id: @circle.id) %>
 
-                <%if player.active%>
-                  <td><%= link_to 'active', controller: "players", action: "active",
-                  circle_id: @circle.id, player_id: player.id, page: "circles",group: @group%></td>
-                <%else%>
-                  <td><%= link_to '-', controller: "players", action: "active",
-                  circle_id: @circle.id, player_id: player.id, page: "circles", group: @group%></td>
-                <%end%>
+                  <%if player.active%>
+                    <td><%= link_to 'active', controller: "players", action: "active",
+                    circle_id: @circle.id, player_id: player.id, page: "circles",group: @group%></td>
+                  <%else%>
+                    <td><%= link_to '-', controller: "players", action: "active",
+                    circle_id: @circle.id, player_id: player.id, page: "circles", group: @group%></td>
+                  <%end%>
 
-                <% if !player.group.blank?%>
-                  <% group = player.group%>
-                  <td><%= link_to group , group: group%></td>
-                <% else %>
-                  <td>-</td>
-                <%end%>
+                  <% if !player.group.blank?%>
+                    <% group = player.group%>
+                    <td><%= link_to group , group: group%></td>
+                  <% else %>
+                    <td>-</td>
+                  <%end%>
 
                   <% if !player.forbidden.blank?%>
                     <% f_list = player.forbidden.split(" ")%>
@@ -105,13 +99,13 @@
                   <% else %>
                     <td>-</td>
                   <%end%>
-              </tr>
-              <% end %>
-            </tbody>
-          </table>
+                </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
-    </div>
     <% end %>
     <% if !@players.where(gender: "female").blank?%>
       <div class="row">

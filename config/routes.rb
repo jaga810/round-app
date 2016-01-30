@@ -13,6 +13,7 @@ Rails.application.routes.draw do
   match '/signup', to: 'circles#new', via: 'get'
   match '/signin', to: 'sessions#new', via: 'get'
   match '/signout', to: 'sessions#destroy', via:'delete'
+  match '/google98e172d314af9745.html', to: 'sessions#googleVertification', via: 'get'
 
   root 'sessions#new'
   # The priority is based upon order of creation: first created -> highest priority.
