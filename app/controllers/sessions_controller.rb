@@ -15,6 +15,7 @@ class SessionsController < ApplicationController
   end
 
   def googleVertification
+    render :layout => false
   end
 
   def destroy
