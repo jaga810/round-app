@@ -89,7 +89,7 @@ class Player < ActiveRecord::Base
       #男子
       case method
       when "mix"
-        time = self.o_time -1
+        time = self.o_time - 1
         self.update_attribute(:o_time, time)
       when "volley"
         time = self.v_time - 1
