@@ -112,6 +112,11 @@ module RoundsHelper
    list.each do |player|
        tof = true
        tof = false if @now_players.include?(player.id)
+       tof = false if @now_players.include?(player.forbidden.to_i)
+      #  puts "tof:" + tof.to_s
+      #  puts "player:" + player.id.to_s
+      #  puts "f player:" + player.forbidden
+      #  puts "nowplayer" + @now_players.to_s
       if tof
         n_list.push(player)
       end

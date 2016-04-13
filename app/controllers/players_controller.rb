@@ -118,9 +118,16 @@ class PlayersController < ApplicationController
     if !@circle.group.blank?
       @groups = @circle.group.split(" ")
     end
-    @forbidden_ls = ["-"]
+
+    if @forbidden_ls.nil?
+      @forbidden_ls = ["-"];
+    else
+      @forbidden_ls = [Player.find(@player.forbidden).name]
+    end
     @circle.players.each do |player|
       next if player.com
+      next if @forbidden_ls.include?(player.name)
+      next if @player.name == player.name
       @forbidden_ls.push(player.name)
     end
   end
@@ -155,17 +162,19 @@ class PlayersController < ApplicationController
   # PATCH/PUT /players/1
   # PATCH/PUT /players/1.json
   def update
+
+    @circle = @player.circle
+
     forbidden = player_params[:forbidden]
     if forbidden == "-"
       forbidden = nil
     else
-      forbidden = Player.find_by(name: player_params[:forbidden]).id
+      forbidden = @circle.players.find_by(name: player_params[:forbidden]).id
     end
     name = player_params[:name]
     circle_id = player_params[:circle_id]
     gender = player_params[:gender]
     group = player_params[:group]
-    @circle = @player.circle
 
     pre_forbidden = player_params[:pre_forbidden]
 

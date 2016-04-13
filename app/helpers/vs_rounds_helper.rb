@@ -67,6 +67,7 @@ module VsRoundsHelper
     n_list = Array.new
    list.each do |player|
        tof = @now_players.include?(player.id) ? false : true
+       tof = false if @now_players.include?(player.forbidden.to_i)
       if tof
         n_list.push(player)
       end
