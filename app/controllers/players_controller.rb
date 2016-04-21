@@ -24,6 +24,7 @@ class PlayersController < ApplicationController
       @player = Player.find(params[:player_id])
       active = @player.active
       active = active == true ? false : true
+      @active = active == true ? "active" : "-"
 
       @player.update_attribute(:active, active )
 
@@ -46,13 +47,9 @@ class PlayersController < ApplicationController
       end
     end
 
-    @tab = params[:tab]
-    case params[:page]
-    when "practices"
-      @practice = Practice.find(params[:practice_id])
-      redirect_to :controller => 'practices', :action => 'show', :id => @practice.id, tab: @tab, group: @group
-    else
-      redirect_to :controller => 'circles', :action => 'show', id: @circle.id, tab: @tab, group: @group
+    respond_to do  |format|
+      puts "called"
+      format.js
     end
   end
 

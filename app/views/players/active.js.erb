@@ -1,0 +1,9 @@
+<% case @method %>
+<% when "allmen"%>
+<% puts "called"%>
+$( '.men' ).children().text("-");
+<% when "allwomen"%>
+$( '.women' ).children().text("-");
+<% else %>
+$(( '#<%= @player.id %>' )).children().text("<%= @active %>");
+<% end %>

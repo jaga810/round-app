@@ -331,7 +331,7 @@
                 <th>Name</th>
                 <th>Group</th>
                 <th><%= link_to "State",controller: "players", action: "active",
-                circle_id: @circle.id, practice_id: @practice.id, page: "practices", method:"allmen",tab: "addplayers" %></th>
+                circle_id: @circle.id, practice_id: @practice.id, page: "practices", method:"allmen",tab: "addplayers", remote: true %></th>
               </tr>
             </thead>
 
@@ -348,11 +348,11 @@
                 <%end%>
 
                   <%if player.active%>
-                    <td><%= link_to 'active', controller: "players", action: "active",
-                    circle_id: @circle.id, player_id: player.id, page: "practices",practice_id: @practice.id, tab: "addplayers"%></td>
+                    <td id="<%= player.id%>" class="men"><%= link_to 'active', controller: "players", action: "active",
+                    circle_id: @circle.id, player_id: player.id, page: "practices",practice_id: @practice.id, tab: "addplayers", remote: true%></td>
                   <%else%>
-                    <td><%= link_to '-', controller: "players", action: "active",
-                    circle_id: @circle.id, player_id: player.id, page: "practices",practice_id: @practice.id, tab: "addplayers"%></td>
+                    <td id="<%= player.id%>" class="men"><%= link_to '-', controller: "players", action: "active",
+                    circle_id: @circle.id, player_id: player.id, page: "practices",practice_id: @practice.id, tab: "addplayers" , remote: true%></td>
                   <%end%>
               </tr>
               <% end %>
@@ -391,7 +391,7 @@
                 <th>Name</th>
                 <th>Group</th>
                 <th><%= link_to "State",controller: "players", action: "active",
-                circle_id: @circle.id, practice_id: @practice.id, page: "practices", method:"allwomen", tab:"addplayers" %></th>
+                circle_id: @circle.id, practice_id: @practice.id, page: "practices", method:"allwomen", tab:"addplayers", remote: true %></th>
               </tr>
             </thead>
 
@@ -409,11 +409,11 @@
                   <%end%>
 
                   <%if player.active%>
-                    <td><%= link_to 'active', controller: "players", action: "active",
-                    circle_id: @circle.id, player_id: player.id, page: "practices",practice_id: @practice.id, tab: "addplayers"%></td>
+                    <td id="<%= player.id%>" class="women"><%= link_to 'active', controller: "players", action: "active",
+                    circle_id: @circle.id, player_id: player.id, page: "practices",practice_id: @practice.id, tab: "addplayers", remote: true%></td>
                   <%else%>
-                    <td><%= link_to '-', controller: "players", action: "active",
-                    circle_id: @circle.id, player_id: player.id, page: "practices",practice_id: @practice.id,tab: "addplayers"%></td>
+                    <td id="<%= player.id%>" class="women"><%= link_to '-', controller: "players", action: "active",
+                    circle_id: @circle.id, player_id: player.id, page: "practices",practice_id: @practice.id,tab: "addplayers", remote: true%></td>
                   <%end%>
                 </tr>
               <% end %>
