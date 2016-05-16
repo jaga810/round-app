@@ -65,7 +65,11 @@ module VsRoundsHelper
     #playerが自分のカラムを書き換えるためのmethodデータ
     method = sex == "mix" ? "mix" : "stroke"
     player1.update_attribute(:method, method) if !player1.com
-    player2.update_attribute(:method, "volley") if !player2.com
+    if sex == "mix"
+      player2.update_attribute(:method, "mix") if !player2.com
+    else
+      player2.update_attribute(:method, "volley") if !player2.com
+    end
   end
 
   #roundに入っていない人を選定
@@ -130,7 +134,7 @@ module VsRoundsHelper
     least_time = 100
 
     list.each do |player|
-      if vos == "v"
+      if vos == "v" && sex == "same"
         least_time = player.v_time < least_time ? player.v_time : least_time
       elsif sex == "mix"
         least_time = player.o_time < least_time ? player.o_time : least_time
@@ -140,7 +144,7 @@ module VsRoundsHelper
     end
     #list
     list.each do |player|
-      if vos == "v"
+      if vos == "v" && sex=="same"
         l_list.push(player) if player.v_time == least_time
       elsif sex == "mix"
         l_list.push(player) if player.o_time == least_time

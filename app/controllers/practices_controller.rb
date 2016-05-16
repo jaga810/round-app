@@ -5,7 +5,7 @@ class PracticesController < ApplicationController
   def show
     @circle = @practice.circle
     @rounds = @practice.rounds
-    @ranes = @practice.man_rane + @practice.mix_rane
+    @ranes = @practice.man_rane + @practice.mix_rane + @practice.female_rane
 
     @group = params[:circle][:group] if !params[:circle].nil?
     @group = params[:group] if !params[:group].nil?

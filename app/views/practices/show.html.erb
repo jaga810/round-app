@@ -78,7 +78,7 @@
 
             <tbody>
                 <% @rounds.reverse_each do |round| %>
-                <% ranes = round.mix_rane + round.man_rane + round.mix_rane%>
+                <% ranes = round.mix_rane + round.man_rane + round.female_rane%>
                 <% now_players = round.now_players.split(" ")%>
                 <tr>
                   <td><%= "#{round.order.ordinalize}"%></td>

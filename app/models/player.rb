@@ -93,7 +93,8 @@ class Player < ActiveRecord::Base
   end
 
   def sub_time
-    method = self.past_method.split(" ").last
+    past_method = self.past_method.split(" ")
+    method = past_method.last
     if self.gender == "male"
       #男子
       case method
@@ -118,13 +119,18 @@ class Player < ActiveRecord::Base
         time = self.v_time - 1
         self.update_attribute(:v_time, time)
       else
-        #stroke と　manのとき
+        #stroke と　femaleのとき
         time = self.time - 1
         self.update_attribute(:time, time)
       end
     end
-    past_method = self.past_method.split(" ")
+    puts "--------------------"
+    past_method.push("test")
+    puts past_method
     past_method = past_method.delete_at(-1)
+    puts "!!!!!!!!!!!!!!!!!!!!"
+    puts past_method
+    puts "--------------------"
     past_method = past_method.join(" ") if !past_method.kind_of?(String)
     self.update_attribute(:past_method, past_method)
   end

@@ -10,7 +10,6 @@ module RoundsHelper
     end
   end
 
-
   def female_rane(rane)
     for i in @man_rane + @mix_rane + 1..@man_rane+@mix_rane+@female_rane do
       choose_person(i, @f_list, @f_list, "same")
