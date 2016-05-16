@@ -48,7 +48,7 @@ class PlayersController < ApplicationController
     end
 
     respond_to do  |format|
-      puts "called"
+      # puts "called"
       format.js
     end
   end

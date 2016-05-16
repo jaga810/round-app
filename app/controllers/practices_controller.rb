@@ -85,7 +85,7 @@ class PracticesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def practice_params
-      params.require(:practice).permit(:circle_id, :mix_rane, :man_rane, :method)
+      params.require(:practice).permit(:circle_id, :mix_rane, :man_rane,:female_rane, :method)
     end
 
     def correct_circle

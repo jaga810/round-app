@@ -9,31 +9,33 @@ class RoundsController < ApplicationController
     @practice = Practice.find(@practice_id)
     @circle = @practice.circle
 
-    @man_rane = params[:man_rane].to_i
-    @mix_rane = params[:mix_rane].to_i
+    @man_rane = @practice.man_rane
+    @mix_rane = @practice.mix_rane
+    @female_rane = @practice.female_rane
 
     @m_list = @circle.players.where(gender: "male", active: true)
     @f_list = @circle.players.where(gender: "female", active: true)
-
     @com = @circle.players.find_by(com: true)
-
     @now_players = Array.new
 
     if @man_rane != 0
        man_rane(@man_rane)
     end
-
     if @mix_rane != 0
        mix_rane(@mix_rane)
     end
-    rane = @man_rane + @mix_rane
+    if @female_rane !=0
+      female_rane(@female_rane)
+    end
+
+    rane = @man_rane + @mix_rane + @female_rane
     s_list = @m_list + @f_list
 
     play(rane, s_list)
 
     order = @practice.rounds.count + 1
     @now_players = @now_players.join(" ")
-    round = @practice.rounds.new(now_players: @now_players,order: order,man_rane: @man_rane, mix_rane: @mix_rane)
+    round = @practice.rounds.new(now_players: @now_players,order: order,man_rane: @man_rane, mix_rane: @mix_rane, female_rane: @female_rane)
 
     if round.save
       redirect_to @practice

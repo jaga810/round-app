@@ -28,19 +28,25 @@ module VsRoundsHelper
 
   def man_rane (rane)
     for i in 1..rane do
-      choose_person(i, @m_list,"man")
+      choose_person(i, @m_list,@m_list,"man")
     end
   end
 
   def mix_rane (rane)
     for i in @man_rane+1..@man_rane+@mix_rane do
-      choose_person(i,@f_list, "mix" )
+      choose_person(i,@m_list,@f_list, "mix" )
     end
   end
 
-  def choose_person (rane, list, sex)
+  def female_rane (rane)
+    for i in @man_rane+ @mix_rane +1 .. @man_rane+@mix_rane+@female_rane do
+      choose_person(i,@f_list,@f_list,"same")
+    end
+  end
+
+  def choose_person (rane, list1, list2, sex)
     #一人目 （ストローク）
-    c_list = choose_new(@m_list)
+    c_list = choose_new(list1)
     c_list = choose_least(c_list, sex)
     player1 = choose_dur(c_list)
     player1 ||= @com
@@ -48,7 +54,7 @@ module VsRoundsHelper
     @now_players.push(player1.id)
 
     #二人目　（ボレー）
-    c_list = choose_new(list)
+    c_list = choose_new(list2)
     c_list = played_with(c_list, player1)
     c_list = choose_least(c_list,sex, "v")
     player2 = choose_dur(c_list)
@@ -124,9 +130,9 @@ module VsRoundsHelper
     least_time = 100
 
     list.each do |player|
-      if vos == "v" && sex =="man"
+      if vos == "v"
         least_time = player.v_time < least_time ? player.v_time : least_time
-      elsif sex == "mix"&& player.gender == "male"
+      elsif sex == "mix"
         least_time = player.o_time < least_time ? player.o_time : least_time
       else
         least_time = player.time < least_time ? player.time : least_time
@@ -134,9 +140,9 @@ module VsRoundsHelper
     end
     #list
     list.each do |player|
-      if sex == "man" && vos == "v"
+      if vos == "v"
         l_list.push(player) if player.v_time == least_time
-      elsif sex == "mix"&& player.gender == "male"
+      elsif sex == "mix"
         l_list.push(player) if player.o_time == least_time
       else
         l_list.push(player) if player.time == least_time

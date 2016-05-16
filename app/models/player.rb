@@ -39,7 +39,6 @@ class Player < ActiveRecord::Base
       past_duration = self.duration.to_s
     end
     self.update_attribute(:past_duration, past_duration)
-
     self.update_attribute(:duration, 0)
   end
 
@@ -70,8 +69,18 @@ class Player < ActiveRecord::Base
       end
     else
       #女子
-      time = self.time + 1
-      self.update_attribute(:time, time)
+      case method
+      when "mix"
+        time = self.o_time + 1
+        self.update_attribute(:o_time, time)
+      when "volley"
+        time = self.v_time + 1
+        self.update_attribute(:v_time, time)
+      else
+        #stroke と　manのとき
+        time = self.time + 1
+        self.update_attribute(:time, time)
+      end
     end
 
     if self.past_method.blank?
@@ -101,12 +110,36 @@ class Player < ActiveRecord::Base
       end
     else
       #女子
-      time = self.time - 1
-      self.update_attribute(:time, time)
+      case method
+      when "mix"
+        time = self.o_time - 1
+        self.update_attribute(:o_time, time)
+      when "volley"
+        time = self.v_time - 1
+        self.update_attribute(:v_time, time)
+      else
+        #stroke と　manのとき
+        time = self.time - 1
+        self.update_attribute(:time, time)
+      end
     end
     past_method = self.past_method.split(" ")
     past_method = past_method.delete_at(-1)
     past_method = past_method.join(" ") if !past_method.kind_of?(String)
     self.update_attribute(:past_method, past_method)
   end
+
+  # def all_played?
+  #   list = self.played_player.split(" ")
+  #   now_players = self.circle.players.where(actice: true)
+  #   tof = false
+  #   now_players.each do |player|
+  #     #現在のプレーヤーの中に、対戦したことがない人がいるか
+  #     tof =  !list.include?(player)
+  #     puts tof
+  #     if(tof)
+  #       break
+  #     end
+  #   end
+  # end
 end

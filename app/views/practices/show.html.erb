@@ -39,13 +39,15 @@
               <%if @practice.method == "stroke"%>
                 <%= link_to "Next!", new_round_path(practice_id: @practice.id,
                                                           man_rane: @practice.man_rane,
-                                                          mix_rane: @practice.mix_rane),
+                                                          mix_rane: @practice.mix_rane,
+                                                          female_rane: @practice.female_rane),
                                                           class: "btn btn-primary" %>
               <%else%>
                 <%= link_to "Next!", {controller: "vs_rounds", action: "new",
                                                           practice_id: @practice.id,
                                                           man_rane: @practice.man_rane,
-                                                          mix_rane: @practice.mix_rane},
+                                                          mix_rane: @practice.mix_rane,
+                                                        female_rane: @practice.female_rane},
                                                           {:class => "btn btn-primary" }%>
               <%end%>
 
@@ -76,7 +78,7 @@
 
             <tbody>
                 <% @rounds.reverse_each do |round| %>
-                <% ranes = round.mix_rane + round.man_rane %>
+                <% ranes = round.mix_rane + round.man_rane + round.mix_rane%>
                 <% now_players = round.now_players.split(" ")%>
                 <tr>
                   <td><%= "#{round.order.ordinalize}"%></td>
@@ -176,6 +178,7 @@
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Female</th>
                 <th>Mix</th>
                 <th>Duration</th>
               </tr>
@@ -187,6 +190,7 @@
                 <tr>
                   <td><%= player.name %></td>
                   <td><%= player.time %></td>
+                  <td><%= player.o_time %> </td>
                   <td><%= player.duration %></td>
                 </tr>
               <% end %>
@@ -276,6 +280,8 @@
             <thead>
               <tr>
                 <th>Name</th>
+                <th>Volley</th>
+                <th>Stroke</th>
                 <th>Mix</th>
                 <th>Duration</th>
               </tr>
@@ -286,7 +292,9 @@
               <% next if player.gender == "male"||!player.active||player.com %>
                 <tr>
                   <td><%= player.name %></td>
+                  <td><%= player.v_time %></td>
                   <td><%= player.time %></td>
+                  <td><%= player.o_time %></td>
                   <td><%= player.duration %></td>
                 </tr>
               <% end %>
@@ -440,6 +448,15 @@
                   <%= f.label :man_rane, "Men ranes",:class=>"col-sm-6 control-label" %>
                   <div class="col-sm-2">
                     <%= f.number_field :man_rane,:class=>"form-control" %>
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <div class="field">
+                  <%= f.label :female_rane, "Female ranes",:class=>"col-sm-6 control-label" %>
+                  <div class="col-sm-2">
+                    <%= f.number_field :female_rane,:class=>"form-control" %>
                   </div>
                 </div>
               </div>
