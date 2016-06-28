@@ -187,9 +187,9 @@ module VsRoundsHelper
 
     list.each do |player|
       if sex =="mix"
-        least_time = player.v_time < least_time ? player.v_time : least_time
-      elsif vos == "v"
         least_time = player.o_time < least_time ? player.o_time : least_time
+      elsif vos == "v"
+        least_time = player.v_time < least_time ? player.v_time : least_time
       else
         least_time = player.time < least_time ? player.time : least_time
       end
@@ -197,9 +197,9 @@ module VsRoundsHelper
     #list
     list.each do |player|
       if sex == "mix"
-        l_list.push(player) if player.v_time == least_time
-      elsif vos == "v"
         l_list.push(player) if player.o_time == least_time
+      elsif vos == "v"
+        l_list.push(player) if player.v_time == least_time
       else
         l_list.push(player) if player.time == least_time
       end

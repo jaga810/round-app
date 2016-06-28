@@ -4,6 +4,9 @@ class VsRoundsController < ApplicationController
 
   # GET /rounds/new
   def new
+    @flag = true
+    @min_time1 = 100
+    @min_time2 = 100
     @round = Round.new
     @practice_id = params[:practice_id]
     @practice = Practice.find(@practice_id)
