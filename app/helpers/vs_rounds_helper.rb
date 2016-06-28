@@ -44,9 +44,55 @@ module VsRoundsHelper
     end
   end
 
+  def choose_roop(rane, list1, list2, sex)
+    # 変数の初期化
+    @min_time1 = 100
+    @min_time2 = 100
+    @flag = true
+    while(@flag)
+
+      # グループ１のリスティング
+      min_time = 100
+      list1.each do |player|
+        time = player.sum_time
+        if(time < min_time && time <= @min_time1)
+          #最小値の更新。ただし前回の最小値以下のものは採用しない
+          min_time = time
+        end
+      end
+      # これ以上候補がいない場合
+      if(@min_time1 == min_time)
+        @flag = false
+        break
+      end
+      @min_time1 = min_time
+      new_list1 = list1.where("sum_time=#{min_time}")
+
+
+      # グループ2のリスティング
+      min_time = 100
+      list2.each do |player|
+        time = player.sum_time
+        if(time < min_time && time <= @min_time2)
+          min_time = time
+        end
+      end
+      # これ以上候補がいない場合
+      if(@min_time2 == min_time)
+        @flag = false
+        break
+      end
+      @min_time2 = min_time
+      new_list2 = list2.where("sum_time=#{min_time}")
+
+      choose_person(rane, new_list1,new_list2, sex)
+    end
+  end
+
   def choose_person (rane, list1, list2, sex)
     #一人目 （ストローク）
     c_list = choose_new(list1)
+    c_list = choose_stroker(c_list) if sex != "mix"
     c_list = choose_least(c_list, sex)
     player1 = choose_dur(c_list)
     player1 ||= @com
@@ -69,6 +115,12 @@ module VsRoundsHelper
       player2.update_attribute(:method, "mix") if !player2.com
     else
       player2.update_attribute(:method, "volley") if !player2.com
+    end
+    #ループ続けるかどうか
+    if(player1 == @com || player2 == @com)
+      @flag = true
+    else
+      @flag = false
     end
   end
 
@@ -134,9 +186,9 @@ module VsRoundsHelper
     least_time = 100
 
     list.each do |player|
-      if vos == "v" && sex == "same"
+      if sex =="mix"
         least_time = player.v_time < least_time ? player.v_time : least_time
-      elsif sex == "mix"
+      elsif vos == "v"
         least_time = player.o_time < least_time ? player.o_time : least_time
       else
         least_time = player.time < least_time ? player.time : least_time
@@ -144,14 +196,32 @@ module VsRoundsHelper
     end
     #list
     list.each do |player|
-      if vos == "v" && sex=="same"
+      if sex == "mix"
         l_list.push(player) if player.v_time == least_time
-      elsif sex == "mix"
+      elsif vos == "v"
         l_list.push(player) if player.o_time == least_time
       else
         l_list.push(player) if player.time == least_time
       end
     end
     return l_list
+  end
+  #volleyに入れていない人をstrokeの候補から除外する
+  def choose_stroker (list)
+    val = Array.new
+    #平均のvolley回数の導出
+    avg_time = 0
+    num = list.length
+    list.each do |player|
+      avg_time += player.v_time
+      puts player.v_time
+    end
+    avg_time /= num
+    puts avg_time
+    list.each do |player|
+      unless(player.v_time < avg_time)
+        val.push(player)
+      end
+    end
   end
 end

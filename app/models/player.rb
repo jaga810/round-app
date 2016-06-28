@@ -90,6 +90,9 @@ class Player < ActiveRecord::Base
       past_method = past_method.push(self.method).join(" ")
     end
     self.update_attribute(:past_method, past_method)
+    # vsラウンド用
+    time = self.sum_time + 1
+    self.update_attribute(:sum_time, time)
   end
 
   def sub_time
@@ -124,15 +127,14 @@ class Player < ActiveRecord::Base
         self.update_attribute(:time, time)
       end
     end
-    puts "--------------------"
     past_method.push("test")
-    puts past_method
     past_method = past_method.delete_at(-1)
-    puts "!!!!!!!!!!!!!!!!!!!!"
-    puts past_method
-    puts "--------------------"
     past_method = past_method.join(" ") if !past_method.kind_of?(String)
     self.update_attribute(:past_method, past_method)
+
+    #vs_round用
+    time = self.sum_time - 1
+    self.update_attribute(:sum_time, time)
   end
 
   # def all_played?
