@@ -20,3 +20,4 @@ doc/
 .DS_Store
 .idea
 .secret
+selenium_test
