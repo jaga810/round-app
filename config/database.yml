@@ -25,7 +25,7 @@ production:
   database: db/production.sqlite3
   adapter: postgresql
   encoding: unicode
-  database: d11dmglsfe5rpn
+  database: <%=ENV['DATABASE_DATABASE']%>
   pool: 5432
-  username: nsbyiidsmtsoar
-  password: tPOU1IMvZFrpdbxYgpgc-XFPX8
+  username: <%=ENV['DATABASE_USERNAME']%>
+  password: <%=ENV['DATABASE_PASSWORD']%>

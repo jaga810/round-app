@@ -43,7 +43,7 @@ ActiveRecord::Schema.define(version: 20160628103858) do
     t.text     "past_method"
     t.text     "past_duration"
     t.string   "pre_forbidden"
-    t.integer  "sum_time"
+    t.integer  "sum_time",      default: 0
   end
 
   create_table "practices", force: :cascade do |t|
